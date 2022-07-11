@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "watch",
+      "command": "gulp",
+      "args": ["startWatch"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "type": "shell",
+      "isBackground": true
+    },
+    {
+      "label": "prepare release",
+      "command": "gulp",
+      "args": ["prepareRelease"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "type": "shell",
+      "isBackground": true
+    }
+  ]
+}

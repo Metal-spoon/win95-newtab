@@ -1,0 +1,58 @@
+#searchbutton {
+  &:focus {
+    outline-offset: -6px;
+  }
+  &:active {
+    outline-offset: -6px;
+  }
+}
+
+.searchbar {
+  border-bottom: groove 2px #fff8ff;
+  border-right: groove 2px #fff8ff;
+  border-top: groove 2px black;
+  border-left: groove 2px black;
+  color: black;
+  width: 100%;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  font-family: pixelated;
+}
+
+.searchbar:focus {
+  outline: 0;
+}
+
+.searchbarwrapper {
+  width: 20%;
+  border-top: ridge 3px white;
+  border-left: ridge 3px white;
+  border-bottom: ridge 2px black;
+  border-right: ridge 2px black;
+  background-color: $gray-95;
+  height: 125px;
+}
+
+.dialogtopbar {
+  background-color: $blue-95;
+  text-align: left;
+  border: 2px solid #c0c3c8;
+  color: white;
+  padding-left: 2px;
+  font-family: pixelated;
+}
+
+.xbutton {
+  margin: 4px 4px 0px 4px;
+  width: 16px;
+  height: 16px;
+}
+
+.searchicon {
+  margin: 4px 4px 0px 4px;
+}
+
+.dialogbody {
+  background-color: $gray-95;
+  padding: 10px;
+}

@@ -1,0 +1,48 @@
+@import './variables';
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#modal-content {
+  background-color: $gray-95;
+  border-top: outset 2px white;
+  border-left: outset 2px white;
+  border-bottom: outset 2px black;
+  border-right: outset 2px black;
+  border-radius: 0;
+  font-family: pixelated;
+}
+
+#modal-header {
+  background-color: $blue-95;
+  color: white;
+  padding: 5px;
+  border-radius: 0;
+}
+
+.modalTitleText {
+  font-size: 1rem;
+}
+
+#modal-x-button {
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.modal-button {
+  &:focus {
+    outline-offset: -6px;
+  }
+
+  &:active {
+    outline-offset: -6px;
+  }
+}
+
+#modal-footer {
+  border: 0;
+}
+
+.settings-icon {
+  margin-bottom: 2px;
+}

@@ -1,0 +1,109 @@
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background-color: bfb8bf;
+  border-top: outset 3px white;
+}
+
+#startButton {
+  height: 28px;
+  &:focus {
+    outline-offset: -4px;
+  }
+}
+
+.startButtonWrapper {
+  margin-top: 5px;
+  margin-left: 3px;
+}
+
+.startClick {
+  border-top: 2px inset black !important;
+  border-left: 2px inset black !important;
+  border-right: 2px inset white !important;
+  border-bottom: 2px inset white !important;
+  outline: 1px dotted black !important;
+  outline-offset: -4px !important;
+}
+
+.startMenuText {
+  margin-top: 10px;
+  font-family: pixelated;
+  font-size: 1em;
+  line-height: 125%;
+}
+
+.startMenuIcon {
+  margin-bottom: 2px;
+}
+
+.clock {
+  height: 28px;
+  border: inset 2px white;
+  margin-top: 5px;
+  margin-right: 3px;
+  padding: 2px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.clockText {
+  font-family: pixelated;
+  font-size: 1rem;
+  line-height: 125%;
+}
+
+.startMenu {
+  background-color: $gray-95;
+  display: block;
+  border-top: outset 2px white;
+  border-left: outset 2px white;
+  border-bottom: outset 2px black;
+  border-right: outset 2px black;
+  position: absolute;
+  top: -119px;
+  left: 3px;
+  font-family: pixelated;
+}
+
+.leftText {
+  width: 28px;
+  background-color: $blue-95;
+  transform: rotateZ(-90deg);
+  transform-origin: center left;
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  color: white;
+  position: absolute;
+  top: 113px;
+  left: 13px;
+  padding-left: 3px;
+  width: 68%;
+  border-bottom: groove 2px white;
+}
+
+.menuItem {
+  padding-left: 28px;
+  padding-right: 5px;
+}
+
+.menuItem:hover {
+  background-color: $blue-95;
+  color: white;
+  cursor: pointer;
+}
+
+.menuItem::first-letter {
+  text-decoration: underline;
+}
+
+.divider {
+  height: 1px;
+  border-top: ridge 1px white;
+  border-bottom: ridge 1px grey;
+  margin: 2px;
+}
