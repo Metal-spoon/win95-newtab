@@ -1,0 +1,56 @@
+@import './variables.scss';
+.background-container {
+  background-color: white;
+  width: 100%;
+  height: 50%;
+  border-top: 3px inset black;
+  border-left: 3px inset black;
+  border-bottom: 3px inset rgb(151, 149, 149);
+  border-right: 3px inset rgb(151, 149, 149);
+}
+
+.wallpaper-list {
+  list-style: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  padding: 2px;
+  text-align: center;
+}
+
+.wallpaper-item {
+  width: 20%;
+  float: left;
+  text-decoration: none;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  padding-top: 12px;
+  &:hover {
+    background-color: $blue-95;
+    color: white;
+  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wallpaper-image-wrapper {
+  width: 96px;
+  margin: auto;
+  position: sticky;
+  padding: 0 !important;
+}
+
+.delete-icon {
+  cursor: pointer;
+}
+
+.upload-button {
+  float: right;
+  margin-top: 10px;
+}
+
+.random-checkbox {
+  margin-top: 10px;
+}

@@ -1,0 +1,220 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+@import './partials/variables';
+@import './partials/searchdialog';
+@import './partials/startmenu';
+@import './partials/modaldialog';
+@import './partials/topsites';
+@import './partials/backgroundsettings';
+
+.background {
+  background-repeat: no-repeat;
+  background-size: 100vw 100vh;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: pixelated;
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.inset-border {
+  border-top: 2px inset black;
+  border-left: 2px inset black;
+  border-right: 2px inset white;
+  border-bottom: 2px inset white;
+}
+
+.button-95 {
+  font-family: pixelated;
+  background-color: $gray-95;
+  color: black;
+  border-top: outset 2px white;
+  border-left: outset 2px white;
+  border-bottom: outset 2px black;
+  border-right: outset 2px black;
+  &:focus {
+    outline: 1px dotted black;
+  }
+  &:active {
+    border-top: 2px inset black;
+    border-left: 2px inset black;
+    border-right: 2px inset white;
+    border-bottom: 2px inset white;
+    outline: 1px dotted black;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &:disabled {
+    cursor: default !important;
+    color: darken($gray-95, 40);
+    text-shadow: 1px 1px white;
+  }
+}
+.checkBoxContainer {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  padding-left: 35px;
+  user-select: none;
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &:hover input ~ .checkmark {
+    background-color: #cccccc;
+  }
+
+  .checkmark {
+    border-top: 2px inset black;
+    border-left: 2px inset black;
+    border-right: 2px inset darken(lightgray, 20);
+    border-bottom: 2px inset darken(lightgray, 20);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    color: black;
+    &:after {
+      content: '';
+      position: absolute;
+      display: none;
+    }
+  }
+}
+
+.checkBoxContainer input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkBoxContainer input:disabled ~ .checkmark {
+  background-color: $gray-95;
+  cursor: default !important;
+}
+
+.checkBoxContainer .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.speech-bubble {
+  font-family: pixelated;
+  position: absolute;
+  bottom: 45px;
+  right: 1%;
+  background: #ffffe1;
+  border-radius: 0.4em;
+  border: 1px solid black;
+  z-index: 999;
+  padding: 10px;
+}
+
+.speech-bubble:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 90%;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-top-color: black;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -10px;
+  margin-bottom: -20px;
+}
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  bottom: 2;
+  left: 90%;
+  width: 0;
+  height: 0;
+  border: 19px solid transparent;
+  border-top-color: ffffe1;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -10px;
+  margin-bottom: -20px;
+}
+
+.default-cursor {
+  cursor: default !important;
+}
+
+.dropdown-95 {
+  -webkit-appearance: none;
+  background-image: url('../assets/img/dropdown.png');
+  background-repeat: no-repeat;
+  background-position: right 50%;
+  font-size: 16px;
+  background-size: 23px 24px;
+  width: 150px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  option:hover {
+    background-color: $blue-95;
+    cursor: pointer;
+  }
+}
+
+.settings-divider {
+  margin-top: 15px;
+}
+
+.search-settings-label {
+  width: 100px;
+}
+
+.search-settings-textbox {
+  width: 100%;
+  padding-left: 2px;
+}
+.custom-search-engine-span {
+  margin-bottom: 10px;
+}
+
+.search-engine-add-button {
+  margin-top: 10px;
+}
+
+input[type='text']:focus {
+  outline: none;
+}
+
+.credits-link {
+  color: $blue-95;
+  &:hover {
+    color: $blue-95;
+    text-decoration: underline;
+  }
+}

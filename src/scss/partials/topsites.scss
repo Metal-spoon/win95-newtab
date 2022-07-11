@@ -1,0 +1,54 @@
+.topSite {
+  width: 20%;
+  float: left;
+  text-decoration: none;
+  color: white;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.topsite:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.topsite span {
+  display: inline-block;
+  width: 100%;
+  font-size: 175%;
+}
+
+.topsite:hover span {
+  outline: 1px dotted white;
+  background-color: $blue-95;
+}
+
+.topsite:hover img {
+  filter: url(#blueFilter);
+}
+.topSiteList {
+  width: 100%;
+  padding-left: 0px;
+  margin-top: 20px;
+}
+
+.topSitesWrapper {
+  color: white;
+  font-family: pixelated;
+  width: 30%;
+}
+
+a:nth-child(6n) {
+  clear: left;
+}
+
+.topsiteContent {
+  list-style: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  display: block;
+  white-space: nowrap;
+  width: 100%;
+  padding: 2px;
+}
