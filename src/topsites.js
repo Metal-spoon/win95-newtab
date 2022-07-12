@@ -22,6 +22,12 @@ export function initializeTopSites () {
 function buildTopsiteList (sites) {
   $('.topSiteList').empty()
   sites.slice(0, 10).forEach((topSite, index) => {
+    if (!topSite.title) {
+      const re = /(?:\.|\/{2})(.*)(?:\.)/g
+      topSite.title = re
+        .exec(topSite.url)[1]
+        .replace(/^./, (str) => str.toUpperCase())
+    }
     $('.topSiteList').append(
       "<a class=topSite href='" +
         topSite.url +
