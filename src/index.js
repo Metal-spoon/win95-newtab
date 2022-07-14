@@ -5,6 +5,7 @@ import * as wallpaperSettings from './wallpaper-settings.js'
 import { initializeWallpapers } from './wallpapers.js'
 import * as searchengines from './searchengines.js'
 import * as searchSettings from './search-settings.js'
+import * as clock from './clock.js'
 
 let currentDialog = ''
 
@@ -138,45 +139,15 @@ function onModalSaveClick (e) {
   closeModal()
 }
 
-function updateClock () {
-  const currentTime = new Date()
-  const HourFormat24 = $.parseJSON(localStorage.getItem('24hourformat'))
-  const showSeconds = $.parseJSON(localStorage.getItem('showseconds'))
-  let currentHours = currentTime.getHours()
-  let currentMinutes = currentTime.getMinutes()
-
-  currentMinutes = (currentMinutes < 10 ? '0' : '') + currentMinutes
-  let dayTime = ''
-
-  if (!HourFormat24) {
-    dayTime = currentHours < 12 ? ' AM' : ' PM'
-    currentHours = currentHours > 12 ? currentHours - 12 : currentHours
-    currentHours = currentHours === 0 ? 12 : currentHours
-  }
-  let clockString = currentHours + ':' + currentMinutes
-  if (showSeconds) {
-    let currentSeconds = currentTime.getSeconds()
-    if (currentSeconds < 10) {
-      currentSeconds = '0' + currentSeconds
-    }
-    clockString = clockString + ':' + currentSeconds
-  }
-  if (!HourFormat24) {
-    clockString = clockString + dayTime
-  }
-
-  $('.clockText').text(clockString)
-}
-
 function showSpeechBubble () {
   $('.speech-bubble').fadeIn().delay(3000).fadeOut()
 }
 
 $(function () {
+  clock.init()
   initializeTopSites()
   searchengines.initializeSearchEngines()
   initializeWallpapers()
-  updateClock()
   $(document).on('keydown', function (e) {
     console.log(e.code)
     switch (e.code) {
@@ -200,5 +171,4 @@ $(function () {
   $('#modal-x-button').on('click', onModalXClick)
   $('#modal-button-cancel').on('click', onModalCancelClick)
   $('#modal-button-save').on('click', onModalSaveClick)
-  setInterval(updateClock, 1000)
 })
