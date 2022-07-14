@@ -3,6 +3,7 @@ import './lib/js/bootstrap.min.js'
 import { initializeTopSites } from './topsites.js'
 import * as wallpaperSettings from './wallpaper-settings.js'
 import { initializeWallpapers } from './wallpapers.js'
+import * as searchengines from './searchengines.js'
 
 let currentDialog = ''
 let searchEngines
@@ -259,71 +260,13 @@ function updateClock () {
   $('.clockText').text(clockString)
 }
 
-function initializeSearchEngines () {
-  let searchEngines = JSON.parse(localStorage.getItem('searchengines'))
-  if (!searchEngines) {
-    searchEngines = [
-      {
-        id: 1,
-        name: 'Google',
-        url: 'http://www.google.com/search?q=',
-        isCustom: false
-      },
-      {
-        id: 2,
-        name: 'Yahoo',
-        url: 'https://search.yahoo.com/search?p=',
-        isCustom: false
-      },
-      {
-        id: 3,
-        name: 'Bing',
-        url: 'https://www.bing.com/search?q=',
-        isCustom: false
-      },
-      {
-        id: 4,
-        name: 'DuckDuckGo',
-        url: 'https://duckduckgo.com/?q=',
-        isCustom: false
-      },
-      {
-        id: 5,
-        name: 'Yandex',
-        url: 'https://yandex.com/search/?text=',
-        isCustom: false
-      },
-      {
-        id: 6,
-        name: 'Ecosia',
-        url: 'https://www.ecosia.org/search?q=',
-        isCustom: false
-      }
-    ]
-    localStorage.setItem('searchengines', JSON.stringify(searchEngines))
-  }
-  let selectedSearchEngine = JSON.parse(
-    localStorage.getItem('selectedsearchengine')
-  )
-  if (!selectedSearchEngine) {
-    // GOOGLE
-    selectedSearchEngine = searchEngines.find((x) => x.id === 1)
-    localStorage.setItem(
-      'selectedsearchengine',
-      JSON.stringify(selectedSearchEngine)
-    )
-  }
-
-  $('#search-dialog-title').text(selectedSearchEngine.name + ' search...')
-}
-
 function showSpeechBubble () {
   $('.speech-bubble').fadeIn().delay(3000).fadeOut()
 }
 
 $(function () {
   initializeTopSites()
-  initializeSearchEngines()
+  searchengines.initializeSearchEngines()
   initializeWallpapers()
   updateClock()
   $(document).on('keydown', function (e) {
