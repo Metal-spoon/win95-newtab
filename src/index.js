@@ -1,11 +1,11 @@
 import './lib/js/jquery.min.js'
 import './lib/js/bootstrap.min.js'
-import { initializeTopSites } from './topsites.js'
-import * as wallpaperSettings from './wallpaper-settings.js'
-import { initializeWallpapers } from './wallpapers.js'
-import * as searchengines from './searchengines.js'
-import * as searchSettings from './search-settings.js'
-import * as clock from './clock.js'
+import * as topsitesComponent from './js/components/topsites-component.js'
+import * as wallpaperSettings from './js/settings/wallpaper-settings.js'
+import * as wallpaperComponent from './js/components/wallpaper-component.js'
+import * as searchComponent from './js/components/search-component.js'
+import * as searchSettings from './js/settings/search-settings.js'
+import * as clockComponent from './js/components/clock-component.js'
 
 let currentDialog = ''
 
@@ -38,23 +38,23 @@ function onMenuItemClick (e) {
   switch (e.target.id) {
     case 'background-settings':
       title = 'Background settings'
-      content = './modals/background-settings.html'
+      content = './html/modals/background-settings.html'
       break
     case 'search-settings':
       title = 'Search settings'
-      content = './modals/search-settings.html'
+      content = './html/modals/search-settings.html'
       break
     case 'clock-settings':
       title = 'Clock settings'
-      content = './modals/clock-settings.html'
+      content = './html/modals/clock-settings.html'
       break
     case 'misc-settings':
       title = 'Miscellaneous settings'
-      content = './modals/misc-settings.html'
+      content = './html/modals/misc-settings.html'
       break
     case 'credits':
       title = 'Credits'
-      content = './modals/credits.html'
+      content = './html/modals/credits.html'
       break
     default:
       return
@@ -133,7 +133,7 @@ function onModalSaveClick (e) {
     }
   })
   if (currentDialog === '#misc-settings-modal') {
-    initializeTopSites()
+    topsitesComponent.init()
   }
   showSpeechBubble()
   closeModal()
@@ -144,10 +144,10 @@ function showSpeechBubble () {
 }
 
 $(function () {
-  clock.init()
-  initializeTopSites()
-  searchengines.initializeSearchEngines()
-  initializeWallpapers()
+  clockComponent.init()
+  topsitesComponent.init()
+  searchComponent.init()
+  wallpaperComponent.init()
   $(document).on('keydown', function (e) {
     console.log(e.code)
     switch (e.code) {

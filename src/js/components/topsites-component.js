@@ -3,7 +3,7 @@
  *Template based DOM elements instead of hacky inline html appends
  */
 
-export function initializeTopSites () {
+export function init () {
   $('.topSiteList').empty()
   // chrome.topSites.get.length = 1 = Firefox
   // chrome.topSites.get.lenght = 0 = Chromium

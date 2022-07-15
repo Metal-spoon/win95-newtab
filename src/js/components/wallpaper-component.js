@@ -1,6 +1,6 @@
-import { Wallpaper } from './models/wallpaper.js'
+import { Wallpaper } from '../models/wallpaper.js'
 
-export function initializeWallpapers () {
+export function init () {
   let wallpapers = JSON.parse(localStorage.getItem('wallpapers'))
   if (!wallpapers) {
     wallpapers = [

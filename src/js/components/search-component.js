@@ -1,6 +1,6 @@
-import { SearchEngine } from './models/searchengine.js'
+import { SearchEngine } from '../models/searchengine.js'
 
-export function initializeSearchEngines () {
+export function init () {
   let searchEngines = JSON.parse(localStorage.getItem('searchengines'))
   if (!searchEngines) {
     searchEngines = [

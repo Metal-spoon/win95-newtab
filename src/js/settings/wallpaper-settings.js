@@ -1,8 +1,8 @@
-import { Wallpaper } from './models/wallpaper.js'
+import { Wallpaper } from '../models/wallpaper.js'
 let wallPapers = []
 let randomWallpaper
 
-export function initializeBackgroundSettings () {
+export function init () {
   const wallpapers = JSON.parse(localStorage.getItem('wallpapers'))
   wallPapers = wallpapers
   wallpapers.forEach((wallpaper) => {
