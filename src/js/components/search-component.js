@@ -26,4 +26,23 @@ export function init () {
   }
 
   $('#search-dialog-title').text(selectedSearchEngine.name + ' search...')
+  bindevents()
+}
+
+function onSearchButtonClick (e) {
+  $('#searchbutton').trigger('blur')
+  const searchQuery = $('.searchbar').val()
+  const searchEngine = JSON.parse(localStorage.getItem('selectedsearchengine'))
+  if (searchQuery !== '') {
+    window.location.href = searchEngine.url + searchQuery
+  }
+}
+
+function bindevents () {
+  $('.searchbar').on('keydown', (e) => {
+    if (e.code === 'Enter') {
+      onSearchButtonClick()
+    }
+  })
+  $('#searchbutton').on('click', onSearchButtonClick)
 }
