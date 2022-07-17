@@ -2,6 +2,22 @@ import * as searchSettings from '../settings/search-settings.js'
 import * as wallpaperSettings from '../settings/wallpaper-settings.js'
 
 let currentDialog
+const dialogs = [
+  {
+    id: 'background-settings',
+    title: 'Background settings',
+    controller: wallpaperSettings
+  },
+  {
+    id: 'search-settings',
+    title: 'Search settings',
+    controller: searchSettings
+  },
+  { id: 'clock-settings', title: 'Clock settings', controller: null },
+  { id: 'misc-settings', title: 'Miscellaneous settings', controller: null }
+]
+
+const contentpath = '../../html/modals/'
 
 export function init () {
   bindevents()
@@ -12,7 +28,6 @@ function bindevents () {
   $('#modal-button-cancel').on('click', onModalCancelClick)
   $('#modal-button-save').on('click', onModalSaveClick)
   $(document).on('keydown', function (e) {
-    console.log(e.code)
     switch (e.code) {
       case 'Escape':
         closeModal()
@@ -22,7 +37,7 @@ function bindevents () {
 }
 
 function onModalCancelClick (e) {
-  $('#modal-button-cancel').blur()
+  $('#modal-button-cancel').trigger('blur')
   closeModal()
 }
 
@@ -31,23 +46,42 @@ function closeModal () {
 }
 
 function onModalSaveClick (e) {
-  if (currentDialog === '#background-settings-modal') {
-    wallpaperSettings.save()
-    showSpeechBubble()
-    closeModal()
-    return
-  } else if (currentDialog === '#search-settings-modal') {
-    searchSettings.save()
-    showSpeechBubble()
-    closeModal()
-    return
-  } else if (currentDialog === '#credits-modal') {
+  if (currentDialog === '#credits-modal') {
     closeModal()
     $('#modal-button-cancel').show()
     $('#modal-button-save').text('Save')
     return
   }
-  $(currentDialog + ' input').each(function () {
+  if (currentDialog.controller) {
+    currentDialog.controller.save()
+  } else {
+    genericSave()
+  }
+  showSpeechBubble()
+  closeModal()
+}
+
+export function showModal (elementId) {
+  currentDialog = dialogs.find(({ id }) => id === elementId)
+  $('#modal-title').text(currentDialog.title)
+  const content = contentpath + currentDialog.id + '.html'
+  $('#modal-body').load(content, function () {
+    if (currentDialog.id === 'credits') {
+      $('#modal-button-cancel').hide()
+      $('#modal-button-save').text('Close')
+      $('#settings-modal').show()
+    }
+    if (currentDialog.controller) {
+      currentDialog.controller.init()
+    } else {
+      genericLoad()
+    }
+    $('#settings-modal').show()
+  })
+}
+
+function genericSave () {
+  $('#' + currentDialog.id + '-modal input').each(function () {
     switch (this.type) {
       case 'checkbox':
         localStorage.setItem(this.name, this.checked)
@@ -57,42 +91,20 @@ function onModalSaveClick (e) {
         break
     }
   })
-  showSpeechBubble()
-  closeModal()
 }
 
-export function showModal (content, type) {
-  currentDialog = '#' + type + '-modal'
-  $('#modal-body').load(content, function () {
-    if (type === 'background-settings') {
-      wallpaperSettings.init()
-      return
-    } else if (type === 'search-settings') {
-      searchSettings.init()
-      return
-    } else if (type === 'credits') {
-      $('#modal-button-cancel').hide()
-      $('#modal-button-save').text('Close')
-      $('#settings-modal').show()
-      return
+function genericLoad () {
+  $('#' + currentDialog.id + '-modal input').each(function () {
+    const value = JSON.parse(localStorage.getItem(this.name))
+    switch (this.type) {
+      case 'checkbox':
+        this.checked = value
+        break
+      default:
+        this.value = localStorage.getItem(this.name)
+        break
     }
-    $(currentDialog + ' input').each(function () {
-      const value = JSON.parse(localStorage.getItem(this.name))
-      switch (this.type) {
-        case 'checkbox':
-          this.checked = value
-          break
-        default:
-          this.value = localStorage.getItem(this.name)
-          break
-      }
-    })
-    $('#settings-modal').show()
   })
-}
-
-export function setCurrentDialog (currentDialog) {
-  this.currentDialog = currentDialog
 }
 
 function showSpeechBubble () {
