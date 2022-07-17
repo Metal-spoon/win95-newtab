@@ -1,7 +1,7 @@
 let searchEngines
 let selectedSearchEngine
 
-export function initializeSearchSettings () {
+export function init () {
   searchEngines = JSON.parse(localStorage.getItem('searchengines'))
   selectedSearchEngine = JSON.parse(
     localStorage.getItem('selectedsearchengine')

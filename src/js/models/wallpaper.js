@@ -1,10 +1,4 @@
 export class Wallpaper {
-  id
-  fileName
-  isDefault
-  isEnabled
-  imageData
-
   constructor (fileName, isDefault, isEnabled, imageData, id) {
     this.fileName = fileName
     this.isDefault = isDefault
