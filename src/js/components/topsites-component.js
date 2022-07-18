@@ -3,7 +3,7 @@
  *Template based DOM elements instead of hacky inline html appends
  */
 
-export function initializeTopSites () {
+export function init () {
   $('.topSiteList').empty()
   // chrome.topSites.get.length = 1 = Firefox
   // chrome.topSites.get.lenght = 0 = Chromium
@@ -29,7 +29,7 @@ function buildTopsiteList (sites) {
         .replace(/^./, (str) => str.toUpperCase())
     }
     $('.topSiteList').append(
-      "<a class=topSite href='" +
+      "<a class=topsite href='" +
         topSite.url +
         "'><li class=topsiteContent>" +
         '<img id=test' +

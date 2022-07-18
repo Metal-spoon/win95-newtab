@@ -26,10 +26,6 @@ gulp.task('compileStyleDist', (done) => {
     .on('end', done)
 })
 
-gulp.task('copyLibs', (done) => {
-  gulp.src(['src/lib/**']).pipe(gulp.dest('dist/lib')).on('end', done)
-})
-
 gulp.task('copyAssets', (done) => {
   gulp.src(['src/assets/**/*']).pipe(gulp.dest('dist/assets')).on('end', done)
 })
@@ -44,7 +40,7 @@ gulp.task('copyManifest', (done) => {
 
 gulp.task('copyAndMinJS', (done) => {
   gulp
-    .src(['src/main.js'])
+    .src(['src/**/*.js'])
     .pipe(minify({ ext: { min: '.js', src: '-debug.js' }, noSource: true }))
     .pipe(gulp.dest('dist'))
     .on('end', done)
@@ -58,7 +54,7 @@ gulp.task('createArchive', (done) => {
 
   gulp
     .src('dist/**')
-    .pipe(zip('chromevaportab-rel-' + version + ' ' + timestamp + '.zip'))
+    .pipe(zip('95newtab-rel-' + version + ' ' + timestamp + '.zip'))
     .pipe(gulp.dest('Release Archive'))
     .on('end', done)
 })
@@ -78,7 +74,6 @@ gulp.task(
   gulp.series(
     'clean',
     'compileStyleDist',
-    'copyLibs',
     'copyAssets',
     'copyHtml',
     'copyManifest',

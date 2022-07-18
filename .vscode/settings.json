@@ -5,5 +5,8 @@
     "prettier.eslintIntegration": true,
     "[javascript]": {
         "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
     }
 }
