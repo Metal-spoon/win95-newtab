@@ -20,6 +20,16 @@ npm install
 gulp compileStyle
 gulp prepareLibs
 ```
+
+### Creating a release archive
+To create a release version use the following command:
+```
+gulp prepareRelease
+```
+This will first copy everything over to the dist folder, minifies the javascript, compiles the sass and then packs it into a timestamped zip.
+
+The result can be found in the release archive folder.
+
 ## Debugging
 To debug, install the src version of the extension. 
 
