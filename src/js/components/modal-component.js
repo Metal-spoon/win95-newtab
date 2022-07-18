@@ -14,7 +14,8 @@ const dialogs = [
     controller: searchSettings
   },
   { id: 'clock-settings', title: 'Clock settings', controller: null },
-  { id: 'misc-settings', title: 'Miscellaneous settings', controller: null }
+  { id: 'misc-settings', title: 'Miscellaneous settings', controller: null },
+  { id: 'credits', title: 'Credits', controller: null }
 ]
 
 const contentpath = '../../html/modals/'
@@ -46,7 +47,7 @@ function closeModal () {
 }
 
 function onModalSaveClick (e) {
-  if (currentDialog === '#credits-modal') {
+  if (currentDialog.id === 'credits') {
     closeModal()
     $('#modal-button-cancel').show()
     $('#modal-button-save').text('Save')

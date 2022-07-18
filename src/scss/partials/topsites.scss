@@ -1,4 +1,6 @@
-.topSite {
+@import './variables';
+
+.topsite {
   width: 20%;
   float: left;
   text-decoration: none;
@@ -14,8 +16,9 @@
 
 .topsite span {
   display: inline-block;
-  width: 100%;
-  font-size: 175%;
+  font-size: 16px;
+  @include stroke(#000, 1px);
+  -moz-transform: translate3d(0,0,0);
 }
 
 .topsite:hover span {
@@ -27,6 +30,10 @@
   filter: url(#blueFilter);
 }
 .topSiteList {
+  display: flex;
+  list-style-type: none;
+  justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
   padding-left: 0px;
   margin-top: 20px;
@@ -35,7 +42,7 @@
 .topSitesWrapper {
   color: white;
   font-family: pixelated;
-  width: 30%;
+  width: 30.2%;
 }
 
 a:nth-child(6n) {

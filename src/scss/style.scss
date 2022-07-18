@@ -18,6 +18,10 @@ body {
   font-family: pixelated;
 }
 
+svg {
+  position: fixed;
+}
+
 .wrapper {
   height: 100%;
   display: flex;
@@ -139,7 +143,7 @@ body {
 .speech-bubble:before {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
   left: 90%;
   width: 0;
   height: 0;
@@ -150,15 +154,16 @@ body {
   margin-left: -10px;
   margin-bottom: -20px;
 }
+
 .speech-bubble:after {
   content: '';
   position: absolute;
-  bottom: 2;
+  bottom: 2px;
   left: 90%;
   width: 0;
   height: 0;
   border: 19px solid transparent;
-  border-top-color: ffffe1;
+  border-top-color: #ffffe1;
   border-bottom: 0;
   border-right: 0;
   margin-left: -10px;

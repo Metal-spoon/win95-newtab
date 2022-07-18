@@ -9,5 +9,23 @@ $blue-95: #0000aa;
 */
 @font-face {
   font-family:pixelated;
-  src: url('../assets/font/FreePixel.ttf');
+  src:url('../assets/font/PixelOperatorMono.ttf');
+}
+
+@font-face {
+  font-family: pixelated;
+  src:url('../assets/font/PixelOperatorMono-Bold.ttf');
+  font-weight: bold
+}
+
+@mixin stroke($color: #000, $size: 1px) {
+  text-shadow:
+    -#{$size} -#{$size} 0 $color,
+     0        -#{$size} 0 $color,
+     #{$size} -#{$size} 0 $color,
+     #{$size}  0        0 $color,
+     #{$size}  #{$size} 0 $color,
+     0         #{$size} 0 $color,
+    -#{$size}  #{$size} 0 $color,
+    -#{$size}  0        0 $color;
 }
