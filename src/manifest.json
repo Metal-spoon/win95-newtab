@@ -6,9 +6,9 @@
   "chrome_url_overrides": {
     "newtab": "./html/index.html"
   },
-  "permissions": ["topSites", "chrome://favicon/", "history"],
+  "permissions": ["topSites", "chrome://favicon/"],
   "web_accessible_resources": ["assets/font/*.*"],
-  "content_security_policy": "script-src 'self'; object-src 'self'; img-src * chrome://favicon/ data:;",
+  "content_security_policy": "script-src 'self'; object-src 'self';",
   "icons": {
     "48": "./assets/img/icon48.png",
     "128": "./assets/img/icon128.png"
