@@ -1,6 +1,5 @@
 /* eslint-disable linebreak-style */
 const gulp = require('gulp')
-const minify = require('gulp-minify')
 const sass = require('gulp-sass')(require('sass'))
 const zip = require('gulp-zip')
 const del = require('del')
