@@ -5,7 +5,7 @@
 dist
 *.crx
 Release\ Archive
-src/lib/js/*
+src/js/lib/*.js
 *.pem
 
 ### Node ###

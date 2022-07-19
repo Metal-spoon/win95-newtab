@@ -57,10 +57,7 @@ gulp.task('createArchive', (done) => {
 gulp.task('prepareLibs', (done) => {
   gulp
     .src('node_modules/jquery/dist/jquery.min.js')
-    .pipe(gulp.dest('src/lib/js'))
-  gulp
-    .src('node_modules/bootstrap/dist/js/bootstrap.min.js')
-    .pipe(gulp.dest('src/lib/js'))
+    .pipe(gulp.dest('src/js/lib'))
     .on('end', done)
 })
 

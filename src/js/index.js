@@ -1,5 +1,4 @@
 import './lib/jquery.min.js'
-import './lib/bootstrap.min.js'
 import * as topsitesComponent from './components/topsites-component.js'
 import * as wallpaperComponent from './components/wallpaper-component.js'
 import * as searchComponent from './components/search-component.js'
