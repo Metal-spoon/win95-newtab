@@ -11,28 +11,30 @@
 
 .wallpaper-list {
   list-style: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
   padding: 2px;
   text-align: center;
+  display: grid;
+  //108px = width icon (96px, hardcoded) + 12px padding
+  grid-template-columns: repeat(auto-fit, minmax(108px, max-content)); 
+  justify-content: center;
+  
 }
 
 .wallpaper-item {
-  width: 20%;
   float: left;
   text-decoration: none;
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  padding-top: 12px;
   &:hover {
     background-color: $blue-95;
     color: white;
   }
+  padding: 12px;
+}
+
+.wallpaper-file-name-wrapper {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 96px;
 }
 
 .wallpaper-image-wrapper {

@@ -123,7 +123,9 @@ function deleteWallpaper (e) {
 
 function buildWallpaperListElement (wallpaper) {
   let element =
-    "<li class='wallpaper-item'>" +
+    "<li title='" +
+    wallpaper.fileName +
+    "' class='wallpaper-item'>" +
     "<div class='wallpaper-image-wrapper checkBoxContainer'>"
   if (wallpaper.imageData) {
     element = element + "<img src='" + wallpaper.imageData
