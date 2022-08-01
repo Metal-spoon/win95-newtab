@@ -1,21 +1,23 @@
 import { Wallpaper } from '../models/wallpaper.js'
 
 export function init () {
-  let wallpapers = JSON.parse(localStorage.getItem('wallpapers'))
-  if (!wallpapers) {
-    wallpapers = [
-      new Wallpaper('1.png', true, true, null, 0),
-      new Wallpaper('2.png', true, true, null, 1)
-    ]
-    localStorage.setItem('wallpapers', JSON.stringify(wallpapers))
-  }
-  let isRandom = localStorage.getItem('randomWallpaper')
-  if (isRandom == null) {
-    isRandom = true
-    localStorage.setItem('randomWallpaper', isRandom)
-  }
-  const selectedWallpaper = selectWallpaper(wallpapers, isRandom)
-  updateDOM(selectedWallpaper)
+  chrome.storage.local.get(['wallpapers', 'randomWallpaper'], (result) => {
+    let wallpapers = result.wallpapers
+    if (!wallpapers) {
+      wallpapers = [
+        new Wallpaper('1.png', true, true, null, 0),
+        new Wallpaper('2.png', true, true, null, 1)
+      ]
+      chrome.storage.local.set({ wallpapers })
+    }
+    let randomWallpaper = result.randomWallpaper
+    if (randomWallpaper == null) {
+      randomWallpaper = true
+      chrome.storage.local.set({ randomWallpaper })
+    }
+    const selectedWallpaper = selectWallpaper(wallpapers, randomWallpaper)
+    updateDOM(selectedWallpaper)
+  })
 }
 
 function selectWallpaper (wallpapers, isRandom) {

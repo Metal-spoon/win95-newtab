@@ -1,78 +1,84 @@
 import { Wallpaper } from '../models/wallpaper.js'
-let wallPapers = []
+let wallpapers
 let randomWallpaper
 
 export function init () {
-  const wallpapers = JSON.parse(localStorage.getItem('wallpapers'))
-  wallPapers = wallpapers
-  wallpapers.forEach((wallpaper) => {
-    const element = buildWallpaperListElement(wallpaper)
-    $('.wallpaper-list').append(element)
-  })
-
-  $('.wallpaper-image-wrapper').on('click', toggleWallpaper)
-
-  $('.upload-button').on('click', uploadWallpaper)
-  $('#file-input').on('change', (e) => {
-    const filereader = new FileReader()
-    filereader.onload = () => {
-      const data = filereader.result
-      let isEnabled = true
-      if (
-        !randomWallpaper &&
-        wallPapers.filter((x) => x.isEnabled === true).length === 1
-      ) {
-        isEnabled = false
-      }
-      const wallpaperObject = new Wallpaper(
-        e.target.files[0].name,
-        false,
-        isEnabled,
-        data,
-        null
-      )
-      wallPapers.push(wallpaperObject)
-      const element = buildWallpaperListElement(wallpaperObject)
+  chrome.storage.local.get(['wallpapers', 'randomWallpaper'], (result) => {
+    wallpapers = result.wallpapers
+    wallpapers.forEach((wallpaper) => {
+      const element = buildWallpaperListElement(wallpaper)
       $('.wallpaper-list').append(element)
-      $('.wallpaper-image-wrapper').off('click')
-      $('.wallpaper-image-wrapper').on('click', toggleWallpaper)
-      $('.delete-icon').off('click')
-      $('.delete-icon').on('click', deleteWallpaper)
-      updateWallpaperDOM()
-    }
-    filereader.readAsDataURL(e.target.files[0])
-  })
-  $('.delete-icon').on('click', deleteWallpaper)
-  randomWallpaper = JSON.parse(localStorage.getItem('randomWallpaper'))
-
-  $('#randomCheckbox')[0].checked = randomWallpaper
-  $('.random-checkbox').on('click', () => {
-    randomWallpaper = $('#randomCheckbox')[0].checked
-    $('.wallpaper-checkbox').each(function () {
-      this.checked = false
     })
-    wallPapers.forEach((wallpaper) => {
-      wallpaper.isEnabled = false
-    })
+    randomWallpaper = result.randomWallpaper
+    $('#randomCheckbox')[0].checked = randomWallpaper
+    bindEvents()
     updateWallpaperDOM()
+    $('#settings-modal').show()
+  })
+}
+
+function bindEvents () {
+  $('.delete-icon').on('click', deleteWallpaper)
+  $('.random-checkbox').on('click', onRandomCheckboxClick)
+  $('.wallpaper-image-wrapper').on('click', toggleWallpaper)
+  $('.upload-button').on('click', uploadWallpaper)
+  $('#file-input').on('change', onFileUpload)
+}
+
+function onFileUpload (e) {
+  const filereader = new FileReader()
+  filereader.onload = () => {
+    const data = filereader.result
+    let isEnabled = true
+    if (
+      !randomWallpaper &&
+      wallpapers.filter((x) => x.isEnabled === true).length === 1
+    ) {
+      isEnabled = false
+    }
+    const wallpaperObject = new Wallpaper(
+      e.target.files[0].name,
+      false,
+      isEnabled,
+      data,
+      null
+    )
+    wallpapers.push(wallpaperObject)
+    const element = buildWallpaperListElement(wallpaperObject)
+    $('.wallpaper-list').append(element)
+    $('.wallpaper-image-wrapper').off('click')
+    $('.wallpaper-image-wrapper').on('click', toggleWallpaper)
+    $('.delete-icon').off('click')
+    $('.delete-icon').on('click', deleteWallpaper)
+    updateWallpaperDOM()
+  }
+  filereader.readAsDataURL(e.target.files[0])
+}
+
+function onRandomCheckboxClick (e) {
+  randomWallpaper = $('#randomCheckbox')[0].checked
+  $('.wallpaper-checkbox').each(function () {
+    this.checked = false
+  })
+  wallpapers.forEach((wallpaper) => {
+    wallpaper.isEnabled = false
   })
   updateWallpaperDOM()
-  $('#settings-modal').show()
 }
 
 function updateWallpaperDOM () {
-  if (wallPapers.filter((x) => x.isEnabled === true).length === 0) {
+  if (wallpapers.filter((x) => x.isEnabled === true).length === 0) {
     $('#modal-button-save').prop('disabled', true)
   } else {
     $('#modal-button-save').prop('disabled', false)
   }
 
   if (!randomWallpaper) {
-    if (wallPapers.filter((x) => x.isEnabled === true).length > 1) {
+    if (wallpapers.filter((x) => x.isEnabled === true).length > 1) {
       $('#modal-button-save').prop('disabled', true)
       $('.wallpaper-checkbox').prop('disabled', false)
-    } else if (wallPapers.filter((x) => x.isEnabled === true).length === 1) {
-      const enabledId = wallPapers.find((x) => x.isEnabled === true).id
+    } else if (wallpapers.filter((x) => x.isEnabled === true).length === 1) {
+      const enabledId = wallpapers.find((x) => x.isEnabled === true).id
       $('.identifier').each(function () {
         if (Number(this.innerText) !== enabledId) {
           this.parentElement.children[0].children[1].disabled = true
@@ -104,7 +110,7 @@ function toggleWallpaper (e) {
   }
   e.target.parentElement.children[1].checked =
     !e.target.parentElement.children[1].checked
-  const wallpaper = wallPapers.find(
+  const wallpaper = wallpapers.find(
     (x) =>
       x.id ===
       Number(e.target.parentElement.parentElement.children[2].innerText)
@@ -115,8 +121,8 @@ function toggleWallpaper (e) {
 
 function deleteWallpaper (e) {
   const id = Number(e.target.parentElement.children[2].innerText)
-  const wallpaperIndex = wallPapers.findIndex((x) => x.id === id)
-  wallPapers.splice(wallpaperIndex, 1)
+  const wallpaperIndex = wallpapers.findIndex((x) => x.id === id)
+  wallpapers.splice(wallpaperIndex, 1)
   e.target.parentElement.parentNode.removeChild(e.target.parentElement)
   updateWallpaperDOM()
 }
@@ -163,6 +169,5 @@ function buildWallpaperListElement (wallpaper) {
 }
 
 export function save () {
-  localStorage.setItem('wallpapers', JSON.stringify(wallPapers))
-  localStorage.setItem('randomWallpaper', JSON.stringify(randomWallpaper))
+  chrome.storage.local.set({ wallpapers, randomWallpaper })
 }

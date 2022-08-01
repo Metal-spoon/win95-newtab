@@ -6,7 +6,7 @@
   "chrome_url_overrides": {
     "newtab": "./html/index.html"
   },
-  "permissions": ["topSites", "chrome://favicon/"],
+  "permissions": ["topSites", "chrome://favicon/", "storage", "unlimitedStorage"],
   "web_accessible_resources": ["assets/font/*.*"],
   "content_security_policy": "script-src 'self'; object-src 'self';",
   "icons": {
