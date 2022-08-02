@@ -1,5 +1,8 @@
 import { Wallpaper } from '../models/wallpaper.js'
 
+let selectedWallpaper
+const assetPath = '/assets/img/bg/'
+
 export function init () {
   chrome.storage.local.get(['wallpapers', 'randomWallpaper'], (result) => {
     let wallpapers = result.wallpapers
@@ -15,27 +18,33 @@ export function init () {
       randomWallpaper = true
       chrome.storage.local.set({ randomWallpaper })
     }
-    const selectedWallpaper = selectWallpaper(wallpapers, randomWallpaper)
+    selectedWallpaper = selectWallpaper(wallpapers, randomWallpaper)
     updateDOM(selectedWallpaper)
   })
 }
 
 function selectWallpaper (wallpapers, isRandom) {
-  let selectedWallpaper
+  let wallpaper
   if (isRandom) {
     const enabledWallpapers = wallpapers.filter((x) => x.isEnabled === true)
     const index = Math.floor(Math.random() * enabledWallpapers.length)
-    selectedWallpaper = enabledWallpapers[index]
+    wallpaper = enabledWallpapers[index]
   } else {
-    selectedWallpaper = wallpapers.find((x) => x.isEnabled === true)
+    wallpaper = wallpapers.find((x) => x.isEnabled === true)
   }
 
-  return selectedWallpaper
+  return wallpaper
 }
 
-function updateDOM (wallpaper) {
-  const cssValue = wallpaper.imageData
-    ? 'url(' + wallpaper.imageData + ')'
-    : 'url(/assets/img/bg/' + wallpaper.fileName + ')'
-  $('.background').css('background-image', cssValue)
+export function updateDOM () {
+  let cssValue
+  if (selectedWallpaper.isDefault) {
+    cssValue = 'url(' + assetPath + selectedWallpaper.fileName + ')'
+    $('.background').css('background-image', cssValue)
+  } else {
+    chrome.storage.local.get(selectedWallpaper.key, (result) => {
+      cssValue = 'url(' + result[selectedWallpaper.key] + ')'
+      $('.background').css('background-image', cssValue)
+    })
+  }
 }

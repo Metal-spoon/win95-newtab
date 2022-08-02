@@ -1,10 +1,9 @@
 export class Wallpaper {
-  constructor (fileName, isDefault, isEnabled, imageData, id) {
+  constructor (fileName, isDefault, isEnabled, key, id) {
     this.fileName = fileName
     this.isDefault = isDefault
     this.isEnabled = isEnabled
-    this.imageData = imageData
-    this.id =
-      id != null ? id : JSON.parse(localStorage.getItem('wallpapers')).length
+    this.key = key
+    this.id = id
   }
 }
