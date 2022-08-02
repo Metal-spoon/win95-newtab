@@ -1,19 +1,29 @@
 import { Wallpaper } from '../models/wallpaper.js'
 let wallpapers
 let randomWallpaper
+let imageData = {}
+const keysToDelete = []
+const keyPrefix = 'WP_'
+const assetPath = '../assets/img/bg/'
 
 export function init () {
   chrome.storage.local.get(['wallpapers', 'randomWallpaper'], (result) => {
     wallpapers = result.wallpapers
-    wallpapers.forEach((wallpaper) => {
-      const element = buildWallpaperListElement(wallpaper)
-      $('.wallpaper-list').append(element)
-    })
     randomWallpaper = result.randomWallpaper
+    const keys = wallpapers.flatMap((wallpaper) =>
+      wallpaper.key ? wallpaper.key : []
+    )
     $('#randomCheckbox')[0].checked = randomWallpaper
-    bindEvents()
-    updateWallpaperDOM()
-    $('#settings-modal').show()
+    chrome.storage.local.get(keys, (storedImageData) => {
+      imageData = storedImageData
+      wallpapers.forEach((wallpaper) => {
+        const element = buildWallpaperListElement(wallpaper)
+        $('.wallpaper-list').append(element)
+      })
+      updateWallpaperDOM()
+      bindEvents()
+      $('#settings-modal').show()
+    })
   })
 }
 
@@ -30,6 +40,8 @@ function onFileUpload (e) {
   filereader.onload = () => {
     const id = wallpapers.reduce((a, b) => (a.id > b.y ? a : b)).id + 1
     const data = filereader.result
+    const key = keyPrefix + id
+    imageData[key] = data
     let isEnabled = true
     if (
       !randomWallpaper &&
@@ -41,7 +53,7 @@ function onFileUpload (e) {
       e.target.files[0].name,
       false,
       isEnabled,
-      data,
+      key,
       id
     )
     wallpapers.push(wallpaperObject)
@@ -123,22 +135,27 @@ function toggleWallpaper (e) {
 function deleteWallpaper (e) {
   const id = Number(e.target.parentElement.children[2].innerText)
   const wallpaperIndex = wallpapers.findIndex((x) => x.id === id)
+  const wallpaper = wallpapers[wallpaperIndex]
+  keysToDelete.push(wallpaper.key)
+  delete imageData[wallpaper.key]
   wallpapers.splice(wallpaperIndex, 1)
   e.target.parentElement.parentNode.removeChild(e.target.parentElement)
   updateWallpaperDOM()
 }
 
 function buildWallpaperListElement (wallpaper) {
+  const imageSrc = wallpaper.isDefault
+    ? assetPath + wallpaper.fileName
+    : imageData[wallpaper.key]
+
   let element =
     "<li title='" +
     wallpaper.fileName +
     "' class='wallpaper-item'>" +
     "<div class='wallpaper-image-wrapper checkBoxContainer'>"
-  if (wallpaper.imageData) {
-    element = element + "<img src='" + wallpaper.imageData
-  } else {
-    element = element + "<img src='../assets/img/bg/" + wallpaper.fileName
-  }
+
+  element = element + "<img src='" + imageSrc
+
   element =
     element +
     "' width='96px' height='54px' />" +
@@ -170,5 +187,16 @@ function buildWallpaperListElement (wallpaper) {
 }
 
 export function save () {
-  chrome.storage.local.set({ wallpapers, randomWallpaper })
+  chrome.storage.local.remove(keysToDelete, () => {
+    const savedata = {
+      wallpapers,
+      randomWallpaper
+    }
+    wallpapers.forEach((wallpaper) => {
+      if (!wallpaper.isDefault) {
+        savedata[wallpaper.key] = imageData[wallpaper.key]
+      }
+    })
+    chrome.storage.local.set(savedata)
+  })
 }
