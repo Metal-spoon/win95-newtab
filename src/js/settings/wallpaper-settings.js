@@ -28,6 +28,7 @@ function bindEvents () {
 function onFileUpload (e) {
   const filereader = new FileReader()
   filereader.onload = () => {
+    const id = wallpapers.reduce((a, b) => (a.id > b.y ? a : b)).id + 1
     const data = filereader.result
     let isEnabled = true
     if (
@@ -41,7 +42,7 @@ function onFileUpload (e) {
       false,
       isEnabled,
       data,
-      null
+      id
     )
     wallpapers.push(wallpaperObject)
     const element = buildWallpaperListElement(wallpaperObject)
