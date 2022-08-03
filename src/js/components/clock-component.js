@@ -1,16 +1,18 @@
-/*
- *TODO:
- *Update the format/showseconds variable when saving settings so that localstorrage does not get queried every second
- */
+let hourFormat24
+let showSeconds
+let clockInterval
 
 export function init () {
-  updateClock()
-  setInterval(updateClock, 1000)
+  chrome.storage.local.get(['hourFormat24', 'showSeconds'], (result) => {
+    clearInterval(clockInterval)
+    hourFormat24 = result.hourFormat24
+    showSeconds = result.showSeconds
+    updateClock()
+    clockInterval = setInterval(updateClock, 1000)
+  })
 }
 
 function updateClock () {
-  const hourFormat24 = JSON.parse(localStorage.getItem('24hourformat'))
-  const showSeconds = JSON.parse(localStorage.getItem('showseconds'))
   const currentTime = new Date()
   let currentHours = currentTime.getHours()
   let currentMinutes = currentTime.getMinutes()

@@ -1,37 +1,42 @@
-let searchEngines
+import { SearchEngineList } from '../models/searchengine.js'
+import * as searchComponent from '../components/search-component.js'
+import * as modalComponent from '../components/modal-component.js'
+
 let selectedSearchEngine
 
 export function init () {
-  searchEngines = JSON.parse(localStorage.getItem('searchengines'))
-  selectedSearchEngine = JSON.parse(
-    localStorage.getItem('selectedsearchengine')
-  )
-  const element = buildSearchEngineOptionElement(selectedSearchEngine)
-  $('#search-engine-dropdown').append(element)
-  searchEngines
-    .filter((x) => x.id !== selectedSearchEngine.id)
-    .forEach((searchEngine) => {
+  chrome.storage.local.get(['selectedSearchEngine'], (result) => {
+    selectedSearchEngine = result.selectedSearchEngine
+    SearchEngineList.forEach((searchEngine) => {
       const element = buildSearchEngineOptionElement(searchEngine)
       $('#search-engine-dropdown').append(element)
     })
+    $('#search-engine-dropdown').val(selectedSearchEngine.id)
+    bindEvents()
+    $('#settings-modal').show()
+  })
+}
 
-  $('#settings-modal').show()
+function bindEvents () {
+  $('#search-engine-dropdown').on('change', onDropdownChange)
+}
+
+function onDropdownChange () {
+  const dropdownValue = parseInt($('#search-engine-dropdown').val())
+  selectedSearchEngine = SearchEngineList.find((x) => x.id === dropdownValue)
+  console.log(selectedSearchEngine)
 }
 
 function buildSearchEngineOptionElement (searchEngine) {
   const element =
-    "<option value='" + searchEngine.id + "'>" + searchEngine.name + '</option>'
+    '<option value=' + searchEngine.id + '>' + searchEngine.name + '</option>'
   return element
 }
 
 export function save () {
-  localStorage.setItem('searchengines', JSON.stringify(searchEngines))
-  const selectedSearchEngine = searchEngines.find(
-    (x) => x.id === Number($('#search-engine-dropdown').val())
-  )
-  localStorage.setItem(
-    'selectedsearchengine',
-    JSON.stringify(selectedSearchEngine)
-  )
-  $('#search-dialog-title').text(selectedSearchEngine.name + ' search...')
+  chrome.storage.local.set({ selectedSearchEngine }, () => {
+    searchComponent.init()
+    modalComponent.showSpeechBubble()
+    modalComponent.closeModal()
+  })
 }
