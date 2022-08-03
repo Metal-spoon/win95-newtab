@@ -1,4 +1,6 @@
 import { Wallpaper } from '../models/wallpaper.js'
+import * as modalComponent from '../components/modal-component.js'
+
 let wallpapers
 let randomWallpaper
 let imageData = {}
@@ -197,6 +199,9 @@ export function save () {
         savedata[wallpaper.key] = imageData[wallpaper.key]
       }
     })
-    chrome.storage.local.set(savedata)
+    chrome.storage.local.set(savedata, () => {
+      modalComponent.showSpeechBubble()
+      modalComponent.closeModal()
+    })
   })
 }

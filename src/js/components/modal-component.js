@@ -1,5 +1,6 @@
 import * as searchSettings from '../settings/search-settings.js'
 import * as wallpaperSettings from '../settings/wallpaper-settings.js'
+import * as clockComponent from '../components/clock-component.js'
 
 let currentDialog
 const dialogs = [
@@ -13,7 +14,12 @@ const dialogs = [
     title: 'Search settings',
     controller: searchSettings
   },
-  { id: 'clock-settings', title: 'Clock settings', controller: null },
+  {
+    id: 'clock-settings',
+    title: 'Clock settings',
+    controller: null,
+    component: clockComponent
+  },
   { id: 'misc-settings', title: 'Miscellaneous settings', controller: null },
   { id: 'credits', title: 'Credits', controller: null }
 ]
@@ -42,7 +48,7 @@ function onModalCancelClick (e) {
   closeModal()
 }
 
-function closeModal () {
+export function closeModal () {
   $('#settings-modal').hide()
 }
 
@@ -58,8 +64,6 @@ function onModalSaveClick (e) {
   } else {
     genericSave()
   }
-  showSpeechBubble()
-  closeModal()
 }
 
 export function showModal (elementId) {
@@ -77,37 +81,47 @@ export function showModal (elementId) {
     } else {
       genericLoad()
     }
-    $('#settings-modal').show()
   })
 }
 
-function genericSave () {
-  $('#' + currentDialog.id + '-modal input').each(function () {
-    switch (this.type) {
+export function genericSave () {
+  const saveData = {}
+  $('#' + currentDialog.id + '-modal input').each((index, input) => {
+    switch (input.type) {
       case 'checkbox':
-        localStorage.setItem(this.name, this.checked)
+        saveData[input.name] = input.checked
         break
       default:
-        localStorage.setItem(this.name, this.value)
+        saveData[input.name] = input.value
         break
     }
   })
-}
-
-function genericLoad () {
-  $('#' + currentDialog.id + '-modal input').each(function () {
-    const value = JSON.parse(localStorage.getItem(this.name))
-    switch (this.type) {
-      case 'checkbox':
-        this.checked = value
-        break
-      default:
-        this.value = localStorage.getItem(this.name)
-        break
+  chrome.storage.local.set(saveData, () => {
+    if (currentDialog.component) {
+      currentDialog.component.init()
     }
+    showSpeechBubble()
+    closeModal()
   })
 }
 
-function showSpeechBubble () {
+export function genericLoad () {
+  $('#' + currentDialog.id + '-modal input').each((index, input) => {
+    chrome.storage.local.get(input.name, (result) => {
+      const value = result[input.name]
+      switch (input.type) {
+        case 'checkbox':
+          input.checked = value
+          break
+        default:
+          input.value = value
+          break
+      }
+    })
+  })
+  $('#settings-modal').show()
+}
+
+export function showSpeechBubble () {
   $('.speech-bubble').fadeIn().delay(3000).fadeOut()
 }
