@@ -1,5 +1,5 @@
 import { Wallpaper } from '../models/wallpaper.js'
-import * as modalComponent from '../components/modal-component.js'
+import * as defaultController from './default-controller.js'
 
 let Wallpapers
 let RandomWallpaper
@@ -9,7 +9,7 @@ const keyPrefix = 'WP_'
 const assetPath = '../assets/img/bg/'
 
 export function init () {
-  modalComponent.showSpinner()
+  defaultController.showSpinner()
   chrome.storage.local.get(['Wallpapers', 'RandomWallpaper'], (result) => {
     Wallpapers = result.Wallpapers
     RandomWallpaper = result.RandomWallpaper
@@ -25,7 +25,7 @@ export function init () {
       })
       updateWallpaperDOM()
       bindEvents()
-      modalComponent.hideSpinner()
+      defaultController.hideSpinner()
       $('#settings-modal').show()
     })
   })
@@ -42,7 +42,7 @@ function bindEvents () {
 function onFileUpload (e) {
   const filereader = new FileReader()
   filereader.onload = () => {
-    modalComponent.showSpinner('Uploading...')
+    defaultController.showSpinner('Uploading...')
     const id = Wallpapers.reduce((a, b) => (a.id > b.y ? a : b)).id + 1
     const data = filereader.result
     const key = keyPrefix + id
@@ -69,7 +69,7 @@ function onFileUpload (e) {
     $('.delete-icon').off('click')
     $('.delete-icon').on('click', deleteWallpaper)
     updateWallpaperDOM()
-    modalComponent.hideSpinner()
+    defaultController.hideSpinner()
   }
   filereader.readAsDataURL(e.target.files[0])
 }
@@ -193,7 +193,7 @@ function buildWallpaperListElement (wallpaper) {
 }
 
 export function save () {
-  modalComponent.showSpinner('Saving...')
+  defaultController.showSpinner('Saving...')
   chrome.storage.local.remove(keysToDelete, () => {
     const savedata = {
       Wallpapers,
@@ -205,9 +205,9 @@ export function save () {
       }
     })
     chrome.storage.local.set(savedata, () => {
-      modalComponent.hideSpinner()
-      modalComponent.showSpeechBubble()
-      modalComponent.closeModal()
+      defaultController.hideSpinner()
+      defaultController.showSpeechBubble()
+      defaultController.closeModal()
     })
   })
 }
