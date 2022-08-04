@@ -1,9 +1,10 @@
 import * as searchSettings from '../settings/search-settings.js'
 import * as wallpaperSettings from '../settings/wallpaper-settings.js'
 import * as clockComponent from '../components/clock-component.js'
+import * as defaultController from '../settings/default-controller.js'
+import { IsLoading } from '../components/spinner-component.js'
 
 let currentDialog
-let isLoading = false
 
 const dialogs = [
   {
@@ -19,11 +20,15 @@ const dialogs = [
   {
     id: 'clock-settings',
     title: 'Clock settings',
-    controller: null,
+    controller: defaultController,
     component: clockComponent
   },
-  { id: 'misc-settings', title: 'Miscellaneous settings', controller: null },
-  { id: 'credits', title: 'Credits', controller: null }
+  {
+    id: 'misc-settings',
+    title: 'Miscellaneous settings',
+    controller: defaultController
+  },
+  { id: 'credits', title: 'Credits', controller: defaultController }
 ]
 
 const contentpath = '../../html/modals/'
@@ -39,7 +44,7 @@ function bindevents () {
   $(document).on('keydown', function (e) {
     switch (e.code) {
       case 'Escape':
-        if (!isLoading) {
+        if (!IsLoading) {
           closeModal()
         }
         break
@@ -52,7 +57,7 @@ function onModalCancelClick (e) {
   closeModal()
 }
 
-export function closeModal () {
+function closeModal () {
   $('#settings-modal').hide()
 }
 
@@ -63,11 +68,7 @@ function onModalSaveClick (e) {
     $('#modal-button-save').text('Save')
     return
   }
-  if (currentDialog.controller) {
-    currentDialog.controller.save()
-  } else {
-    genericSave()
-  }
+  currentDialog.controller.save()
 }
 
 export function showModal (elementId) {
@@ -80,67 +81,6 @@ export function showModal (elementId) {
       $('#modal-button-save').text('Close')
       $('#settings-modal').show()
     }
-    if (currentDialog.controller) {
-      currentDialog.controller.init()
-    } else {
-      genericLoad()
-    }
+    currentDialog.controller.init(currentDialog)
   })
-}
-
-export function genericSave () {
-  showSpinner('Saving...')
-  const saveData = {}
-  $('#' + currentDialog.id + '-modal input').each((index, input) => {
-    switch (input.type) {
-      case 'checkbox':
-        saveData[input.name] = input.checked
-        break
-      default:
-        saveData[input.name] = input.value
-        break
-    }
-  })
-  chrome.storage.local.set(saveData, () => {
-    if (currentDialog.component) {
-      currentDialog.component.init()
-    }
-    hideSpinner()
-    showSpeechBubble()
-    closeModal()
-  })
-}
-
-export function genericLoad () {
-  showSpinner()
-  $('#' + currentDialog.id + '-modal input').each((index, input) => {
-    chrome.storage.local.get(input.name, (result) => {
-      const value = result[input.name]
-      switch (input.type) {
-        case 'checkbox':
-          input.checked = value
-          break
-        default:
-          input.value = value
-          break
-      }
-    })
-  })
-  hideSpinner()
-  $('#settings-modal').show()
-}
-
-export function showSpeechBubble () {
-  $('.speech-bubble').fadeIn().delay(3000).fadeOut()
-}
-
-export function showSpinner (text = 'Loading...') {
-  isLoading = true
-  $('#spinner-text').text(text)
-  $('.spinner').show()
-}
-
-export function hideSpinner () {
-  isLoading = false
-  $('.spinner').hide()
 }

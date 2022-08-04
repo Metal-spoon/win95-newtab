@@ -1,11 +1,11 @@
 import { SearchEngineList } from './defaults.js'
 import * as searchComponent from '../components/search-component.js'
-import * as modalComponent from '../components/modal-component.js'
+import * as defaultController from './default-controller.js'
 
 let SelectedSearchEngine
 
 export function init () {
-  modalComponent.showSpinner()
+  defaultController.showSpinner()
   chrome.storage.local.get(['SelectedSearchEngine'], (result) => {
     SelectedSearchEngine = result.SelectedSearchEngine
     SearchEngineList.forEach((searchEngine) => {
@@ -14,7 +14,7 @@ export function init () {
     })
     $('#search-engine-dropdown').val(SelectedSearchEngine.id)
     bindEvents()
-    modalComponent.hideSpinner()
+    defaultController.hideSpinner()
     $('#settings-modal').show()
   })
 }
@@ -36,14 +36,11 @@ function buildSearchEngineOptionElement (searchEngine) {
 }
 
 export function save () {
-  modalComponent.showSpinner('Saving...')
-  chrome.storage.local.set(
-    { SelectedSearchEngine },
-    () => {
-      searchComponent.init()
-      modalComponent.hideSpinner()
-      modalComponent.showSpeechBubble()
-      modalComponent.closeModal()
-    }
-  )
+  defaultController.showSpinner('Saving...')
+  chrome.storage.local.set({ SelectedSearchEngine }, () => {
+    searchComponent.init()
+    defaultController.hideSpinner()
+    defaultController.showSpeechBubble()
+    defaultController.closeModal()
+  })
 }
