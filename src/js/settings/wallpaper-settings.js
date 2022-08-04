@@ -1,8 +1,8 @@
 import { Wallpaper } from '../models/wallpaper.js'
 import * as modalComponent from '../components/modal-component.js'
 
-let wallpapers
-let randomWallpaper
+let Wallpapers
+let RandomWallpaper
 let imageData = {}
 const keysToDelete = []
 const keyPrefix = 'WP_'
@@ -10,16 +10,16 @@ const assetPath = '../assets/img/bg/'
 
 export function init () {
   modalComponent.showSpinner()
-  chrome.storage.local.get(['wallpapers', 'randomWallpaper'], (result) => {
-    wallpapers = result.wallpapers
-    randomWallpaper = result.randomWallpaper
-    const keys = wallpapers.flatMap((wallpaper) =>
+  chrome.storage.local.get(['Wallpapers', 'RandomWallpaper'], (result) => {
+    Wallpapers = result.Wallpapers
+    RandomWallpaper = result.RandomWallpaper
+    const keys = Wallpapers.flatMap((wallpaper) =>
       wallpaper.key ? wallpaper.key : []
     )
-    $('#randomCheckbox')[0].checked = randomWallpaper
+    $('#randomCheckbox')[0].checked = RandomWallpaper
     chrome.storage.local.get(keys, (storedImageData) => {
       imageData = storedImageData
-      wallpapers.forEach((wallpaper) => {
+      Wallpapers.forEach((wallpaper) => {
         const element = buildWallpaperListElement(wallpaper)
         $('.wallpaper-list').append(element)
       })
@@ -43,14 +43,14 @@ function onFileUpload (e) {
   const filereader = new FileReader()
   filereader.onload = () => {
     modalComponent.showSpinner('Uploading...')
-    const id = wallpapers.reduce((a, b) => (a.id > b.y ? a : b)).id + 1
+    const id = Wallpapers.reduce((a, b) => (a.id > b.y ? a : b)).id + 1
     const data = filereader.result
     const key = keyPrefix + id
     imageData[key] = data
     let isEnabled = true
     if (
-      !randomWallpaper &&
-      wallpapers.filter((x) => x.isEnabled === true).length === 1
+      !RandomWallpaper &&
+      Wallpapers.filter((x) => x.isEnabled === true).length === 1
     ) {
       isEnabled = false
     }
@@ -61,7 +61,7 @@ function onFileUpload (e) {
       key,
       id
     )
-    wallpapers.push(wallpaperObject)
+    Wallpapers.push(wallpaperObject)
     const element = buildWallpaperListElement(wallpaperObject)
     $('.wallpaper-list').append(element)
     $('.wallpaper-image-wrapper').off('click')
@@ -75,29 +75,29 @@ function onFileUpload (e) {
 }
 
 function onRandomCheckboxClick (e) {
-  randomWallpaper = $('#randomCheckbox')[0].checked
+  RandomWallpaper = $('#randomCheckbox')[0].checked
   $('.wallpaper-checkbox').each(function () {
     this.checked = false
   })
-  wallpapers.forEach((wallpaper) => {
+  Wallpapers.forEach((wallpaper) => {
     wallpaper.isEnabled = false
   })
   updateWallpaperDOM()
 }
 
 function updateWallpaperDOM () {
-  if (wallpapers.filter((x) => x.isEnabled === true).length === 0) {
+  if (Wallpapers.filter((x) => x.isEnabled === true).length === 0) {
     $('#modal-button-save').prop('disabled', true)
   } else {
     $('#modal-button-save').prop('disabled', false)
   }
 
-  if (!randomWallpaper) {
-    if (wallpapers.filter((x) => x.isEnabled === true).length > 1) {
+  if (!RandomWallpaper) {
+    if (Wallpapers.filter((x) => x.isEnabled === true).length > 1) {
       $('#modal-button-save').prop('disabled', true)
       $('.wallpaper-checkbox').prop('disabled', false)
-    } else if (wallpapers.filter((x) => x.isEnabled === true).length === 1) {
-      const enabledId = wallpapers.find((x) => x.isEnabled === true).id
+    } else if (Wallpapers.filter((x) => x.isEnabled === true).length === 1) {
+      const enabledId = Wallpapers.find((x) => x.isEnabled === true).id
       $('.identifier').each(function () {
         if (Number(this.innerText) !== enabledId) {
           this.parentElement.children[0].children[1].disabled = true
@@ -129,7 +129,7 @@ function toggleWallpaper (e) {
   }
   e.target.parentElement.children[1].checked =
     !e.target.parentElement.children[1].checked
-  const wallpaper = wallpapers.find(
+  const wallpaper = Wallpapers.find(
     (x) =>
       x.id ===
       Number(e.target.parentElement.parentElement.children[2].innerText)
@@ -140,11 +140,11 @@ function toggleWallpaper (e) {
 
 function deleteWallpaper (e) {
   const id = Number(e.target.parentElement.children[2].innerText)
-  const wallpaperIndex = wallpapers.findIndex((x) => x.id === id)
-  const wallpaper = wallpapers[wallpaperIndex]
+  const wallpaperIndex = Wallpapers.findIndex((x) => x.id === id)
+  const wallpaper = Wallpapers[wallpaperIndex]
   keysToDelete.push(wallpaper.key)
   delete imageData[wallpaper.key]
-  wallpapers.splice(wallpaperIndex, 1)
+  Wallpapers.splice(wallpaperIndex, 1)
   e.target.parentElement.parentNode.removeChild(e.target.parentElement)
   updateWallpaperDOM()
 }
@@ -196,10 +196,10 @@ export function save () {
   modalComponent.showSpinner('Saving...')
   chrome.storage.local.remove(keysToDelete, () => {
     const savedata = {
-      wallpapers,
-      randomWallpaper
+      Wallpapers,
+      RandomWallpaper
     }
-    wallpapers.forEach((wallpaper) => {
+    Wallpapers.forEach((wallpaper) => {
       if (!wallpaper.isDefault) {
         savedata[wallpaper.key] = imageData[wallpaper.key]
       }

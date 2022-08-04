@@ -1,18 +1,18 @@
-import { SearchEngineList } from '../models/searchengine.js'
+import { SearchEngineList } from './defaults.js'
 import * as searchComponent from '../components/search-component.js'
 import * as modalComponent from '../components/modal-component.js'
 
-let selectedSearchEngine
+let SelectedSearchEngine
 
 export function init () {
   modalComponent.showSpinner()
-  chrome.storage.local.get(['selectedSearchEngine'], (result) => {
-    selectedSearchEngine = result.selectedSearchEngine
+  chrome.storage.local.get(['SelectedSearchEngine'], (result) => {
+    SelectedSearchEngine = result.SelectedSearchEngine
     SearchEngineList.forEach((searchEngine) => {
       const element = buildSearchEngineOptionElement(searchEngine)
       $('#search-engine-dropdown').append(element)
     })
-    $('#search-engine-dropdown').val(selectedSearchEngine.id)
+    $('#search-engine-dropdown').val(SelectedSearchEngine.id)
     bindEvents()
     modalComponent.hideSpinner()
     $('#settings-modal').show()
@@ -25,8 +25,8 @@ function bindEvents () {
 
 function onDropdownChange () {
   const dropdownValue = parseInt($('#search-engine-dropdown').val())
-  selectedSearchEngine = SearchEngineList.find((x) => x.id === dropdownValue)
-  console.log(selectedSearchEngine)
+  SelectedSearchEngine = SearchEngineList.find((x) => x.id === dropdownValue)
+  console.log(SelectedSearchEngine)
 }
 
 function buildSearchEngineOptionElement (searchEngine) {
@@ -37,10 +37,13 @@ function buildSearchEngineOptionElement (searchEngine) {
 
 export function save () {
   modalComponent.showSpinner('Saving...')
-  chrome.storage.local.set({ selectedSearchEngine }, () => {
-    searchComponent.init()
-    modalComponent.hideSpinner()
-    modalComponent.showSpeechBubble()
-    modalComponent.closeModal()
-  })
+  chrome.storage.local.set(
+    { SelectedSearchEngine },
+    () => {
+      searchComponent.init()
+      modalComponent.hideSpinner()
+      modalComponent.showSpeechBubble()
+      modalComponent.closeModal()
+    }
+  )
 }

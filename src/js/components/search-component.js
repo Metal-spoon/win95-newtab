@@ -1,15 +1,18 @@
-import { DefaultSearchEngine } from '../models/searchengine.js'
+import {
+  SelectedSearchEngine as defaultSearchEngine,
+  SetDefaultSettings
+} from '../settings/defaults.js'
 
-let selectedSearchEngine
+let SelectedSearchEngine
 
 export function init () {
-  chrome.storage.local.get(['selectedSearchEngine'], (result) => {
-    selectedSearchEngine = result.selectedSearchEngine
-    if (!selectedSearchEngine) {
-      selectedSearchEngine = DefaultSearchEngine
-      chrome.storage.local.set({ selectedSearchEngine })
+  chrome.storage.local.get(['SelectedSearchEngine'], (result) => {
+    SelectedSearchEngine = result.SelectedSearchEngine
+    if (!SelectedSearchEngine) {
+      SelectedSearchEngine = defaultSearchEngine
+      SetDefaultSettings()
     }
-    $('#search-dialog-title').text(selectedSearchEngine.name + ' search...')
+    $('#search-dialog-title').text(SelectedSearchEngine.name + ' search...')
     bindevents()
   })
 }
@@ -18,7 +21,7 @@ function onSearchButtonClick (e) {
   $('#searchbutton').trigger('blur')
   const searchQuery = $('.searchbar').val()
   if (searchQuery !== '') {
-    window.location.href = selectedSearchEngine.url + searchQuery
+    window.location.href = SelectedSearchEngine.url + searchQuery
   }
 }
 
