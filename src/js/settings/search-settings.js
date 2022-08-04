@@ -5,6 +5,7 @@ import * as modalComponent from '../components/modal-component.js'
 let selectedSearchEngine
 
 export function init () {
+  modalComponent.showSpinner()
   chrome.storage.local.get(['selectedSearchEngine'], (result) => {
     selectedSearchEngine = result.selectedSearchEngine
     SearchEngineList.forEach((searchEngine) => {
@@ -13,6 +14,7 @@ export function init () {
     })
     $('#search-engine-dropdown').val(selectedSearchEngine.id)
     bindEvents()
+    modalComponent.hideSpinner()
     $('#settings-modal').show()
   })
 }
@@ -34,8 +36,10 @@ function buildSearchEngineOptionElement (searchEngine) {
 }
 
 export function save () {
+  modalComponent.showSpinner('Saving...')
   chrome.storage.local.set({ selectedSearchEngine }, () => {
     searchComponent.init()
+    modalComponent.hideSpinner()
     modalComponent.showSpeechBubble()
     modalComponent.closeModal()
   })

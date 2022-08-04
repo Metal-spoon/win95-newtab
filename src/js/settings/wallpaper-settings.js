@@ -9,6 +9,7 @@ const keyPrefix = 'WP_'
 const assetPath = '../assets/img/bg/'
 
 export function init () {
+  modalComponent.showSpinner()
   chrome.storage.local.get(['wallpapers', 'randomWallpaper'], (result) => {
     wallpapers = result.wallpapers
     randomWallpaper = result.randomWallpaper
@@ -24,6 +25,7 @@ export function init () {
       })
       updateWallpaperDOM()
       bindEvents()
+      modalComponent.hideSpinner()
       $('#settings-modal').show()
     })
   })
@@ -40,6 +42,7 @@ function bindEvents () {
 function onFileUpload (e) {
   const filereader = new FileReader()
   filereader.onload = () => {
+    modalComponent.showSpinner('Uploading...')
     const id = wallpapers.reduce((a, b) => (a.id > b.y ? a : b)).id + 1
     const data = filereader.result
     const key = keyPrefix + id
@@ -66,6 +69,7 @@ function onFileUpload (e) {
     $('.delete-icon').off('click')
     $('.delete-icon').on('click', deleteWallpaper)
     updateWallpaperDOM()
+    modalComponent.hideSpinner()
   }
   filereader.readAsDataURL(e.target.files[0])
 }
@@ -189,6 +193,7 @@ function buildWallpaperListElement (wallpaper) {
 }
 
 export function save () {
+  modalComponent.showSpinner('Saving...')
   chrome.storage.local.remove(keysToDelete, () => {
     const savedata = {
       wallpapers,
@@ -200,6 +205,7 @@ export function save () {
       }
     })
     chrome.storage.local.set(savedata, () => {
+      modalComponent.hideSpinner()
       modalComponent.showSpeechBubble()
       modalComponent.closeModal()
     })
