@@ -1,36 +1,36 @@
-import { Wallpaper } from '../models/wallpaper.js'
+import {
+  Wallpapers as defaultWallpapers,
+  RandomWallpaper as defaultRandomWallpaper,
+  SetDefaultSettings
+} from '../settings/defaults.js'
 
 let selectedWallpaper
+let Wallpapers
+let RandomWallpaper
 const assetPath = '/assets/img/bg/'
 
 export function init () {
-  chrome.storage.local.get(['wallpapers', 'randomWallpaper'], (result) => {
-    let wallpapers = result.wallpapers
-    if (!wallpapers) {
-      wallpapers = [
-        new Wallpaper('1.png', true, true, null, 0),
-        new Wallpaper('2.png', true, true, null, 1)
-      ]
-      chrome.storage.local.set({ wallpapers })
+  chrome.storage.local.get(['Wallpapers', 'RandomWallpaper'], (result) => {
+    Wallpapers = result.Wallpapers
+    RandomWallpaper = result.RandomWallpaper
+    if (!Wallpapers || RandomWallpaper == null) {
+      Wallpapers = defaultWallpapers
+      RandomWallpaper = defaultRandomWallpaper
+      SetDefaultSettings()
     }
-    let randomWallpaper = result.randomWallpaper
-    if (randomWallpaper == null) {
-      randomWallpaper = true
-      chrome.storage.local.set({ randomWallpaper })
-    }
-    selectedWallpaper = selectWallpaper(wallpapers, randomWallpaper)
+    selectedWallpaper = selectWallpaper()
     updateDOM(selectedWallpaper)
   })
 }
 
-function selectWallpaper (wallpapers, isRandom) {
+function selectWallpaper () {
   let wallpaper
-  if (isRandom) {
-    const enabledWallpapers = wallpapers.filter((x) => x.isEnabled === true)
+  if (RandomWallpaper) {
+    const enabledWallpapers = Wallpapers.filter((x) => x.isEnabled === true)
     const index = Math.floor(Math.random() * enabledWallpapers.length)
     wallpaper = enabledWallpapers[index]
   } else {
-    wallpaper = wallpapers.find((x) => x.isEnabled === true)
+    wallpaper = Wallpapers.find((x) => x.isEnabled === true)
   }
 
   return wallpaper
