@@ -3,6 +3,8 @@ import * as wallpaperSettings from '../settings/wallpaper-settings.js'
 import * as clockComponent from '../components/clock-component.js'
 
 let currentDialog
+let isLoading = false
+
 const dialogs = [
   {
     id: 'background-settings',
@@ -37,7 +39,9 @@ function bindevents () {
   $(document).on('keydown', function (e) {
     switch (e.code) {
       case 'Escape':
-        closeModal()
+        if (!isLoading) {
+          closeModal()
+        }
         break
     }
   })
@@ -85,6 +89,7 @@ export function showModal (elementId) {
 }
 
 export function genericSave () {
+  showSpinner('Saving...')
   const saveData = {}
   $('#' + currentDialog.id + '-modal input').each((index, input) => {
     switch (input.type) {
@@ -100,12 +105,14 @@ export function genericSave () {
     if (currentDialog.component) {
       currentDialog.component.init()
     }
+    hideSpinner()
     showSpeechBubble()
     closeModal()
   })
 }
 
 export function genericLoad () {
+  showSpinner()
   $('#' + currentDialog.id + '-modal input').each((index, input) => {
     chrome.storage.local.get(input.name, (result) => {
       const value = result[input.name]
@@ -119,9 +126,21 @@ export function genericLoad () {
       }
     })
   })
+  hideSpinner()
   $('#settings-modal').show()
 }
 
 export function showSpeechBubble () {
   $('.speech-bubble').fadeIn().delay(3000).fadeOut()
+}
+
+export function showSpinner (text = 'Loading...') {
+  isLoading = true
+  $('#spinner-text').text(text)
+  $('.spinner').show()
+}
+
+export function hideSpinner () {
+  isLoading = false
+  $('.spinner').hide()
 }
