@@ -5,14 +5,21 @@ import * as searchComponent from './components/search-component.js'
 import * as clockComponent from './components/clock-component.js'
 import * as modalComponent from './components/modal-component.js'
 import * as startmenuComponent from './components/startmenu-component.js'
+import * as defaultSettings from './settings/defaults.js'
 
 $(function () {
-  clockComponent.init()
-  topsitesComponent.init()
-  searchComponent.init()
-  wallpaperComponent.init()
-  modalComponent.init()
-  startmenuComponent.init()
-  $('.startMenu').hide()
-  $('.speech-bubble').hide()
+  chrome.storage.local.get(defaultSettings.AllSettings, (settings) => {
+    if (Object.values(settings).some((x) => x == null)) {
+      settings = defaultSettings.DefaultSettings
+      defaultSettings.SetDefaultSettings()
+    }
+    clockComponent.init(settings)
+    topsitesComponent.init(settings)
+    searchComponent.init(settings)
+    wallpaperComponent.init(settings)
+    modalComponent.init(settings)
+    startmenuComponent.init()
+    $('.startMenu').hide()
+    $('.speech-bubble').hide()
+  })
 })

@@ -1,20 +1,9 @@
-import {
-  SelectedSearchEngine as defaultSearchEngine,
-  SetDefaultSettings
-} from '../settings/defaults.js'
-
 let SelectedSearchEngine
 
-export function init () {
-  chrome.storage.local.get(['SelectedSearchEngine'], (result) => {
-    SelectedSearchEngine = result.SelectedSearchEngine
-    if (!SelectedSearchEngine) {
-      SelectedSearchEngine = defaultSearchEngine
-      SetDefaultSettings()
-    }
-    $('#search-dialog-title').text(SelectedSearchEngine.name + ' search...')
-    bindevents()
-  })
+export function init (settings) {
+  SelectedSearchEngine = settings.SelectedSearchEngine
+  $('#search-dialog-title').text(SelectedSearchEngine.name + ' search...')
+  bindevents()
 }
 
 function onSearchButtonClick (e) {

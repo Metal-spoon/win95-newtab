@@ -37,7 +37,7 @@ export function save () {
   })
   chrome.storage.local.set(saveData, () => {
     if (_currentDialog.component) {
-      _currentDialog.component.init()
+      _currentDialog.component.init(saveData)
     }
     hideSpinner()
     showSpeechBubble()

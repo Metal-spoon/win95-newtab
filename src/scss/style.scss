@@ -265,3 +265,11 @@ input[type='text']:focus {
 #spinner {
   display: none;
 }
+
+.outline {
+  @include stroke(#000, 1px);
+}
+
+.retrobg {
+  background-color: #008080
+}

@@ -1,7 +1,7 @@
 import { Wallpaper } from '../models/wallpaper.js'
 import { SearchEngine } from '../models/searchengine.js'
 
-export const Wallpapers = [
+const Wallpapers = [
   new Wallpaper('1.png', true, true, null, 0),
   new Wallpaper('2.png', true, true, null, 1)
 ]
@@ -15,28 +15,40 @@ export const SearchEngineList = [
   new SearchEngine(5, 'Ecosia', 'https://www.ecosia.org/search?q=')
 ]
 
-export const SelectedSearchEngine = SearchEngineList[0]
+const SelectedSearchEngine = SearchEngineList[0]
+const RandomWallpaper = true
+const HourFormat24 = false
+const ShowSeconds = false
+const TrimTitles = false
+const TopsiteOutlines = true
+const RetroTitles = false
 
-export const RandomWallpaper = true
+export const DefaultSettings = {
+  Wallpapers,
+  SelectedSearchEngine,
+  RandomWallpaper,
+  HourFormat24,
+  ShowSeconds,
+  TrimTitles,
+  TopsiteOutlines,
+  RetroTitles
+}
 
-export const HourFormat24 = false
-
-export const ShowSeconds = false
-
-export const TrimTitles = false
-
-export const TopsiteOutlines = true
-
-export const RetroTitles = false
+export const AllSettings = [
+  'Wallpapers',
+  'SelectedSearchEngine',
+  'RandomWallpaper',
+  'HourFormat24',
+  'ShowSeconds',
+  'TrimTitles',
+  'TopsiteOutlines',
+  'RetroTitles'
+]
 
 export function SetDefaultSettings () {
   chrome.storage.local.clear(() => {
     chrome.storage.local.set({
-      Wallpapers,
-      SelectedSearchEngine,
-      RandomWallpaper,
-      HourFormat24,
-      ShowSeconds
+      DefaultSettings
     })
   })
 }

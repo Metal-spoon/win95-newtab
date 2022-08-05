@@ -2,6 +2,7 @@ import * as searchSettings from '../settings/search-settings.js'
 import * as wallpaperSettings from '../settings/wallpaper-settings.js'
 import * as clockComponent from '../components/clock-component.js'
 import * as defaultController from '../settings/default-controller.js'
+import * as topsitesComponent from '../components/topsites-component.js'
 import { IsLoading } from '../components/spinner-component.js'
 
 let currentDialog
@@ -26,7 +27,8 @@ const dialogs = [
   {
     id: 'shortcut-settings',
     title: 'Shortcut settings',
-    controller: defaultController
+    controller: defaultController,
+    component: topsitesComponent
   },
   { id: 'credits', title: 'Credits', controller: defaultController }
 ]

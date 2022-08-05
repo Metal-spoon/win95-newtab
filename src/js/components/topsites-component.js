@@ -2,49 +2,31 @@
  *TODO:
  *Template based DOM elements instead of hacky inline html appends
  */
-import {
-  TrimTitles as defaultTrimTitles,
-  TopsiteOutlines as defaultTopsiteOutlines,
-  RetroTitles as defaultRetroTitles,
-  SetDefaultSettings
-} from '../settings/defaults.js'
 
 let TrimTitles
 let TopsiteOutlines
 let RetroTitles
 
-export function init () {
+export function init (settings) {
   $('.topSiteList').empty()
   // chrome.topSites.get.length = 1 = Firefox
   // chrome.topSites.get.lenght = 0 = Chromium
-  chrome.storage.local.get(
-    ['Trimtitles', 'TopsiteOutlines', 'RetroTitles'],
-    (result) => {
-      TrimTitles = result.TrimTitles
-      TopsiteOutlines = result.TopsiteOutlines
-      RetroTitles = result.RetroTitles
-      if (
-        TrimTitles == null ||
-        TopsiteOutlines == null ||
-        RetroTitles == null
-      ) {
-        TrimTitles = defaultTrimTitles
-        TopsiteOutlines = defaultTopsiteOutlines
-        RetroTitles = defaultRetroTitles
-        SetDefaultSettings()
-      }
 
-      if (chrome.topSites.get.length === 0) {
-        chrome.topSites.get((result) => {
-          buildTopsiteList(result)
-        })
-      } else {
-        chrome.topSites.get({ includeFavicon: true }, (result) => {
-          buildTopsiteList(result)
-        })
-      }
-    }
-  )
+  TrimTitles = settings.TrimTitles
+  TopsiteOutlines = settings.TopsiteOutlines
+  RetroTitles = settings.RetroTitles
+
+  if (chrome.topSites.get.length === 0) {
+    chrome.topSites.get((result) => {
+      buildTopsiteList(result)
+      applySettings()
+    })
+  } else {
+    chrome.topSites.get({ includeFavicon: true }, (result) => {
+      buildTopsiteList(result)
+      applySettings()
+    })
+  }
 }
 
 function buildTopsiteList (sites) {
@@ -56,25 +38,42 @@ function buildTopsiteList (sites) {
         .exec(topSite.url)[1]
         .replace(/^./, (str) => str.toUpperCase())
     }
+
+    if (TrimTitles) {
+      const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=\s|$)/g
+      topSite.title = trimRegex.exec(topSite.title)[0]
+    }
     $('.topSiteList').append(
       "<a title='" +
         topSite.title +
         "'class=topsite href='" +
         topSite.url +
         "'><li class=topsiteContent>" +
-        '<img id=test' +
+        '<img id=topsite' +
         index +
         ' width=32px height=32px src=' +
         '/></br>' +
-        '<span>' +
+        '<span class=topsiteTitle>' +
         topSite.title +
         '</span>' +
         '</li></a>'
     )
     if (topSite.favicon) {
-      $('#test' + index).prop('src', topSite.favicon)
+      $('#topsite' + index).prop('src', topSite.favicon)
     } else {
-      $('#test' + index).prop('src', 'chrome://favicon/size/32/' + topSite.url)
+      $('#topsite' + index).prop(
+        'src',
+        'chrome://favicon/size/32/' + topSite.url
+      )
     }
   })
+}
+
+function applySettings () {
+  if (TopsiteOutlines) {
+    $('.topsiteTitle').addClass('outline')
+  }
+  if (RetroTitles) {
+    $('.topsiteTitle').addClass('retrobg')
+  }
 }
