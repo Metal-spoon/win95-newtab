@@ -40,7 +40,7 @@ function buildTopsiteList (sites) {
     }
 
     if (TrimTitles) {
-      const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=\s|$)/g
+      const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/g
       topSite.title = trimRegex.exec(topSite.title)[0]
     }
     $('.topSiteList').append(

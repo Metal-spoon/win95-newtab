@@ -47,8 +47,6 @@ export const AllSettings = [
 
 export function SetDefaultSettings () {
   chrome.storage.local.clear(() => {
-    chrome.storage.local.set({
-      DefaultSettings
-    })
+    chrome.storage.local.set(DefaultSettings)
   })
 }

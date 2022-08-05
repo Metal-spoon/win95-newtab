@@ -9,7 +9,12 @@ import * as defaultSettings from './settings/defaults.js'
 
 $(function () {
   chrome.storage.local.get(defaultSettings.AllSettings, (settings) => {
-    if (Object.values(settings).some((x) => x == null)) {
+    if (
+      JSON.stringify(Object.keys(settings)) !==
+        JSON.stringify(Object.keys(defaultSettings.DefaultSettings)) ||
+      Object.values(settings).some((x) => x == null)
+    ) {
+      console.log('Something went wrong, resetting to defaults...')
       settings = defaultSettings.DefaultSettings
       defaultSettings.SetDefaultSettings()
     }
