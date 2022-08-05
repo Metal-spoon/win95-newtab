@@ -7,7 +7,7 @@ import {
   TopsiteOutlines as defaultTopsiteOutlines,
   RetroTitles as defaultRetroTitles,
   SetDefaultSettings
-} from '../settings/defaults'
+} from '../settings/defaults.js'
 
 let TrimTitles
 let TopsiteOutlines
