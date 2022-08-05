@@ -26,7 +26,6 @@ function bindEvents () {
 function onDropdownChange () {
   const dropdownValue = parseInt($('#search-engine-dropdown').val())
   SelectedSearchEngine = SearchEngineList.find((x) => x.id === dropdownValue)
-  console.log(SelectedSearchEngine)
 }
 
 function buildSearchEngineOptionElement (searchEngine) {

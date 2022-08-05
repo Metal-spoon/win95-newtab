@@ -9,11 +9,7 @@ import * as defaultSettings from './settings/defaults.js'
 
 $(function () {
   chrome.storage.local.get(defaultSettings.AllSettings, (settings) => {
-    if (
-      JSON.stringify(Object.keys(settings)) !==
-        JSON.stringify(Object.keys(defaultSettings.DefaultSettings)) ||
-      Object.values(settings).some((x) => x == null)
-    ) {
+    if (!validateSettings(settings)) {
       console.log('Something went wrong, resetting to defaults...')
       settings = defaultSettings.DefaultSettings
       defaultSettings.SetDefaultSettings()
@@ -28,3 +24,21 @@ $(function () {
     $('.speech-bubble').hide()
   })
 })
+
+function validateSettings (settings) {
+  const storageKeys = JSON.stringify(Object.keys(settings).sort())
+  const defaultKeys = JSON.stringify(
+    Object.keys(defaultSettings.DefaultSettings).sort()
+  )
+  if (Object.keys(settings).length === 0) {
+    return false
+  }
+  if (Object.values(settings).some((x) => x == null)) {
+    return false
+  }
+  if (storageKeys !== defaultKeys) {
+    return false
+  }
+
+  return true
+}
