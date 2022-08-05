@@ -1,26 +1,13 @@
-import {
-  Wallpapers as defaultWallpapers,
-  RandomWallpaper as defaultRandomWallpaper,
-  SetDefaultSettings
-} from '../settings/defaults.js'
-
 let selectedWallpaper
 let Wallpapers
 let RandomWallpaper
 const assetPath = '/assets/img/bg/'
 
-export function init () {
-  chrome.storage.local.get(['Wallpapers', 'RandomWallpaper'], (result) => {
-    Wallpapers = result.Wallpapers
-    RandomWallpaper = result.RandomWallpaper
-    if (!Wallpapers || RandomWallpaper == null) {
-      Wallpapers = defaultWallpapers
-      RandomWallpaper = defaultRandomWallpaper
-      SetDefaultSettings()
-    }
-    selectedWallpaper = selectWallpaper()
-    updateDOM(selectedWallpaper)
-  })
+export function init (settings) {
+  Wallpapers = settings.Wallpapers
+  RandomWallpaper = settings.RandomWallpaper
+  selectedWallpaper = selectWallpaper()
+  updateDOM(selectedWallpaper)
 }
 
 function selectWallpaper () {

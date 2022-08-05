@@ -1,27 +1,14 @@
-import {
-  HourFormat24 as defaultHourFormat24,
-  ShowSeconds as defaultShowSeconds,
-  SetDefaultSettings
-} from '../settings/defaults.js'
-
 let HourFormat24
 let ShowSeconds
 let clockInterval
 
-export function init () {
-  chrome.storage.local.get(['HourFormat24', 'ShowSeconds'], (result) => {
-    HourFormat24 = result.HourFormat24
-    ShowSeconds = result.ShowSeconds
-    if (HourFormat24 == null || ShowSeconds == null) {
-      HourFormat24 = defaultHourFormat24
-      ShowSeconds = defaultShowSeconds
-      SetDefaultSettings()
-    }
-    clearInterval(clockInterval)
+export function init (settings) {
+  HourFormat24 = settings.HourFormat24
+  ShowSeconds = settings.ShowSeconds
+  clearInterval(clockInterval)
 
-    updateClock()
-    clockInterval = setInterval(updateClock, 1000)
-  })
+  updateClock()
+  clockInterval = setInterval(updateClock, 1000)
 }
 
 function updateClock () {
