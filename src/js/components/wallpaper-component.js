@@ -1,39 +1,37 @@
-import { Wallpaper } from '../models/wallpaper.js'
+let selectedWallpaper
+let Wallpapers
+let RandomWallpaper
+const assetPath = '/assets/img/bg/'
 
-export function init () {
-  let wallpapers = JSON.parse(localStorage.getItem('wallpapers'))
-  if (!wallpapers) {
-    wallpapers = [
-      new Wallpaper('1.png', true, true, null, 0),
-      new Wallpaper('2.png', true, true, null, 1)
-    ]
-    localStorage.setItem('wallpapers', JSON.stringify(wallpapers))
-  }
-  let isRandom = localStorage.getItem('randomWallpaper')
-  if (isRandom == null) {
-    isRandom = true
-    localStorage.setItem('randomWallpaper', isRandom)
-  }
-  const selectedWallpaper = selectWallpaper(wallpapers, isRandom)
+export function init (settings) {
+  Wallpapers = settings.Wallpapers
+  RandomWallpaper = settings.RandomWallpaper
+  selectedWallpaper = selectWallpaper()
   updateDOM(selectedWallpaper)
 }
 
-function selectWallpaper (wallpapers, isRandom) {
-  let selectedWallpaper
-  if (isRandom) {
-    const enabledWallpapers = wallpapers.filter((x) => x.isEnabled === true)
+function selectWallpaper () {
+  let wallpaper
+  if (RandomWallpaper) {
+    const enabledWallpapers = Wallpapers.filter((x) => x.isEnabled === true)
     const index = Math.floor(Math.random() * enabledWallpapers.length)
-    selectedWallpaper = enabledWallpapers[index]
+    wallpaper = enabledWallpapers[index]
   } else {
-    selectedWallpaper = wallpapers.find((x) => x.isEnabled === true)
+    wallpaper = Wallpapers.find((x) => x.isEnabled === true)
   }
 
-  return selectedWallpaper
+  return wallpaper
 }
 
-function updateDOM (wallpaper) {
-  const cssValue = wallpaper.imageData
-    ? 'url(' + wallpaper.imageData + ')'
-    : 'url(/assets/img/bg/' + wallpaper.fileName + ')'
-  $('.background').css('background-image', cssValue)
+export function updateDOM () {
+  let cssValue
+  if (selectedWallpaper.isDefault) {
+    cssValue = 'url(' + assetPath + selectedWallpaper.fileName + ')'
+    $('.background').css('background-image', cssValue)
+  } else {
+    chrome.storage.local.get(selectedWallpaper.key, (result) => {
+      cssValue = 'url(' + result[selectedWallpaper.key] + ')'
+      $('.background').css('background-image', cssValue)
+    })
+  }
 }

@@ -1,37 +1,46 @@
-let searchEngines
-let selectedSearchEngine
+import { SearchEngineList } from './defaults.js'
+import * as searchComponent from '../components/search-component.js'
+import * as defaultController from './default-controller.js'
+
+let SelectedSearchEngine
 
 export function init () {
-  searchEngines = JSON.parse(localStorage.getItem('searchengines'))
-  selectedSearchEngine = JSON.parse(
-    localStorage.getItem('selectedsearchengine')
-  )
-  const element = buildSearchEngineOptionElement(selectedSearchEngine)
-  $('#search-engine-dropdown').append(element)
-  searchEngines
-    .filter((x) => x.id !== selectedSearchEngine.id)
-    .forEach((searchEngine) => {
+  defaultController.showSpinner()
+  chrome.storage.local.get(['SelectedSearchEngine'], (result) => {
+    SelectedSearchEngine = result.SelectedSearchEngine
+    SearchEngineList.forEach((searchEngine) => {
       const element = buildSearchEngineOptionElement(searchEngine)
       $('#search-engine-dropdown').append(element)
     })
+    $('#search-engine-dropdown').val(SelectedSearchEngine.id)
+    bindEvents()
+    defaultController.hideSpinner()
+    $('#settings-modal').show()
+  })
+}
 
-  $('#settings-modal').show()
+function bindEvents () {
+  $('#search-engine-dropdown').on('change', onDropdownChange)
+}
+
+function onDropdownChange () {
+  const dropdownValue = parseInt($('#search-engine-dropdown').val())
+  SelectedSearchEngine = SearchEngineList.find((x) => x.id === dropdownValue)
+  console.log(SelectedSearchEngine)
 }
 
 function buildSearchEngineOptionElement (searchEngine) {
   const element =
-    "<option value='" + searchEngine.id + "'>" + searchEngine.name + '</option>'
+    '<option value=' + searchEngine.id + '>' + searchEngine.name + '</option>'
   return element
 }
 
 export function save () {
-  localStorage.setItem('searchengines', JSON.stringify(searchEngines))
-  const selectedSearchEngine = searchEngines.find(
-    (x) => x.id === Number($('#search-engine-dropdown').val())
-  )
-  localStorage.setItem(
-    'selectedsearchengine',
-    JSON.stringify(selectedSearchEngine)
-  )
-  $('#search-dialog-title').text(selectedSearchEngine.name + ' search...')
+  defaultController.showSpinner('Saving...')
+  chrome.storage.local.set({ SelectedSearchEngine }, () => {
+    searchComponent.init({ SelectedSearchEngine })
+    defaultController.hideSpinner()
+    defaultController.showSpeechBubble()
+    defaultController.closeModal()
+  })
 }

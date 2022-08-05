@@ -5,6 +5,11 @@
   <script src="../js/index.js" type="module"></script>
   <title>N e w t a b</title>
 </head>
+<div class="spinner">
+  <div class="spinner-content">
+    <div class="spinner-img"></div><span id="spinner-text">Loading...</span>
+  </div>
+</div>
 
 <div class="wrapper background">
   <div class="searchbarwrapper">
@@ -38,7 +43,7 @@
     <div class="menuItem" id="background-settings">Background settings</div>
     <div class="menuItem" id="search-settings">Search settings</div>
     <div class="menuItem" id="clock-settings">Clock settings</div>
-    <div class="menuItem" id="misc-settings">Misc. settings</div>
+    <div class="menuItem" id="shortcut-settings">Shortcut settings</div>
     <div class="divider"></div>
     <div class="menuItem" id="credits">Credits</div>
   </div>
@@ -56,6 +61,7 @@
 <div class="modal" id="settings-modal">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content" id="modal-content">
+
       <div class="modal-header" id="modal-header">
         <div>
           <div class="d-inline-block">
@@ -63,13 +69,12 @@
           </div>
           <span id="modal-title" class="modalTitleText"></span>
         </div>
-
         <div class="float-end" id="modal-x-button">
           <img class="x-button" src="../assets/img/95.png" />
         </div>
       </div>
       <div class="modal-body" id="modal-body">
-        test
+
       </div>
       <div class="modal-footer" id="modal-footer">
         <button class="button-95 modal-button" id="modal-button-cancel">
@@ -86,10 +91,10 @@
 <svg height="0">
   <defs>
     <filter id="blueFilter">
-      <feColorMatrix type="matrix" values="1 0 0 0 0
-                      0 1 0 0 0
-                      0 0 3 0.3 3
-                      0 0 0 1 0 " />
+      <feColorMatrix type="matrix" values="0.3 0 0 0 0
+                                           0 0.3 0 0 0
+                                           0 0 1 0 0
+                                           0 0 0 1 0 " />
     </filter>
   </defs>
 </svg>

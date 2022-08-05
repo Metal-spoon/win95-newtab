@@ -1,7 +1,12 @@
 import * as searchSettings from '../settings/search-settings.js'
 import * as wallpaperSettings from '../settings/wallpaper-settings.js'
+import * as clockComponent from '../components/clock-component.js'
+import * as defaultController from '../settings/default-controller.js'
+import * as topsitesComponent from '../components/topsites-component.js'
+import { IsLoading } from '../components/spinner-component.js'
 
 let currentDialog
+
 const dialogs = [
   {
     id: 'background-settings',
@@ -13,9 +18,19 @@ const dialogs = [
     title: 'Search settings',
     controller: searchSettings
   },
-  { id: 'clock-settings', title: 'Clock settings', controller: null },
-  { id: 'misc-settings', title: 'Miscellaneous settings', controller: null },
-  { id: 'credits', title: 'Credits', controller: null }
+  {
+    id: 'clock-settings',
+    title: 'Clock settings',
+    controller: defaultController,
+    component: clockComponent
+  },
+  {
+    id: 'shortcut-settings',
+    title: 'Shortcut settings',
+    controller: defaultController,
+    component: topsitesComponent
+  },
+  { id: 'credits', title: 'Credits', controller: defaultController }
 ]
 
 const contentpath = '../../html/modals/'
@@ -31,7 +46,9 @@ function bindevents () {
   $(document).on('keydown', function (e) {
     switch (e.code) {
       case 'Escape':
-        closeModal()
+        if (!IsLoading) {
+          closeModal()
+        }
         break
     }
   })
@@ -53,13 +70,7 @@ function onModalSaveClick (e) {
     $('#modal-button-save').text('Save')
     return
   }
-  if (currentDialog.controller) {
-    currentDialog.controller.save()
-  } else {
-    genericSave()
-  }
-  showSpeechBubble()
-  closeModal()
+  currentDialog.controller.save()
 }
 
 export function showModal (elementId) {
@@ -72,42 +83,6 @@ export function showModal (elementId) {
       $('#modal-button-save').text('Close')
       $('#settings-modal').show()
     }
-    if (currentDialog.controller) {
-      currentDialog.controller.init()
-    } else {
-      genericLoad()
-    }
-    $('#settings-modal').show()
+    currentDialog.controller.init(currentDialog)
   })
-}
-
-function genericSave () {
-  $('#' + currentDialog.id + '-modal input').each(function () {
-    switch (this.type) {
-      case 'checkbox':
-        localStorage.setItem(this.name, this.checked)
-        break
-      default:
-        localStorage.setItem(this.name, this.value)
-        break
-    }
-  })
-}
-
-function genericLoad () {
-  $('#' + currentDialog.id + '-modal input').each(function () {
-    const value = JSON.parse(localStorage.getItem(this.name))
-    switch (this.type) {
-      case 'checkbox':
-        this.checked = value
-        break
-      default:
-        this.value = localStorage.getItem(this.name)
-        break
-    }
-  })
-}
-
-function showSpeechBubble () {
-  $('.speech-bubble').fadeIn().delay(3000).fadeOut()
 }

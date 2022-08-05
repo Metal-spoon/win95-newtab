@@ -1,4 +1,8 @@
 @import './variables';
+#settings-modal {
+  z-index: 998;
+}
+
 .modal {
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -16,7 +20,10 @@
 #modal-header {
   background-color: $blue-95;
   color: white;
-  padding: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
   border-radius: 0;
 }
 
@@ -25,7 +32,6 @@
 }
 
 #modal-x-button {
-  margin-top: 5px;
   cursor: pointer;
 }
 

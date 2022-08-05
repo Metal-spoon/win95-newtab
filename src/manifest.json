@@ -1,12 +1,12 @@
 {
   "name": "Win95 NewTab",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Win95/vaporwave themed newtab page",
   "manifest_version": 2,
   "chrome_url_overrides": {
     "newtab": "./html/index.html"
   },
-  "permissions": ["topSites", "chrome://favicon/"],
+  "permissions": ["topSites", "chrome://favicon/", "storage", "unlimitedStorage"],
   "web_accessible_resources": ["assets/font/*.*"],
   "content_security_policy": "script-src 'self'; object-src 'self';",
   "icons": {
