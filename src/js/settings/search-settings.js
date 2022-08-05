@@ -38,7 +38,7 @@ function buildSearchEngineOptionElement (searchEngine) {
 export function save () {
   defaultController.showSpinner('Saving...')
   chrome.storage.local.set({ SelectedSearchEngine }, () => {
-    searchComponent.init()
+    searchComponent.init({ SelectedSearchEngine })
     defaultController.hideSpinner()
     defaultController.showSpeechBubble()
     defaultController.closeModal()
