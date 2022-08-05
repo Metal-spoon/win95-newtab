@@ -24,8 +24,8 @@ const dialogs = [
     component: clockComponent
   },
   {
-    id: 'misc-settings',
-    title: 'Miscellaneous settings',
+    id: 'shortcut-settings',
+    title: 'Shortcut settings',
     controller: defaultController
   },
   { id: 'credits', title: 'Credits', controller: defaultController }

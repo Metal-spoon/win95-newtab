@@ -23,6 +23,12 @@ export const HourFormat24 = false
 
 export const ShowSeconds = false
 
+export const TrimTitles = false
+
+export const TopsiteOutlines = true
+
+export const RetroTitles = false
+
 export function SetDefaultSettings () {
   chrome.storage.local.clear(() => {
     chrome.storage.local.set({
