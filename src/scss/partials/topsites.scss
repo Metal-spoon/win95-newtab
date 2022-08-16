@@ -17,8 +17,8 @@
 .topsite span {
   display: inline-block;
   font-size: 16px;
-  -moz-transform: translate3d(0,0,0);
-  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
   padding-left: 1ch;
   padding-right: 1ch;
   white-space: nowrap;
@@ -34,6 +34,10 @@
 
 .topsite:hover img {
   filter: url(#blueFilter);
+}
+
+.topsite:hover .topsite-badge {
+  display: none;
 }
 .topSiteList {
   display: flex;
@@ -57,11 +61,35 @@ a:nth-child(6n) {
 
 .topsiteContent {
   list-style: none;
-  overflow: hidden;
+  overflow: visible;
   text-overflow: ellipsis;
   font-size: 10px;
   display: block;
   white-space: nowrap;
   width: 100%;
   padding: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  > .img-wrapper {
+    position: relative;
+  }
+}
+
+.topsite-badge {
+  position: absolute;
+  top: -16px;
+  right: 0px;
+  background-color: #ffffe1;
+  padding: 0px 7px;
+  border-radius: 40px;
+  font-size: 14px;
+  color: black;
+  border: 1.5px solid black;
+  transform: translateX(50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
 }

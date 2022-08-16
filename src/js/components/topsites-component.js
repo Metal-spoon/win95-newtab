@@ -6,6 +6,7 @@
 let TrimTitles
 let TopsiteOutlines
 let RetroTitles
+let ShowBadges
 
 export function init (settings) {
   $('.topSiteList').empty()
@@ -15,6 +16,7 @@ export function init (settings) {
   TrimTitles = settings.TrimTitles
   TopsiteOutlines = settings.TopsiteOutlines
   RetroTitles = settings.RetroTitles
+  ShowBadges = settings.ShowBadges
 
   if (chrome.topSites.get.length === 0) {
     chrome.topSites.get((result) => {
@@ -31,17 +33,27 @@ export function init (settings) {
 
 function buildTopsiteList (sites) {
   $('.topSiteList').empty()
+  const badgeValRegex = /(?<=\()[0-9.,]*(?=\))/
+  const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/
+  const titleUrlRegex = /(?:\.|\/{2})(.*)(?:\.)/
   sites.slice(0, 10).forEach((topSite, index) => {
+    badgeValRegex.lastIndex = 0
+    titleUrlRegex.lastIndex = 0
+    trimRegex.lastIndex = 0
     if (!topSite.title) {
-      const re = /(?:\.|\/{2})(.*)(?:\.)/g
-      topSite.title = re
+      topSite.title = titleUrlRegex
         .exec(topSite.url)[1]
         .replace(/^./, (str) => str.toUpperCase())
     }
+    let badgeVal
+    if (ShowBadges && badgeValRegex.test(topSite.title)) {
+      badgeVal = badgeValRegex.exec(topSite.title)[0]
+      badgeVal = badgeVal.replace(/\./, '')
+    }
 
     if (TrimTitles) {
-      const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/g
-      topSite.title = trimRegex.exec(topSite.title)[0]
+      const newTitle = trimRegex.exec(topSite.title)[0]
+      topSite.title = newTitle
     }
     $('.topSiteList').append(
       "<a title='" +
@@ -49,10 +61,11 @@ function buildTopsiteList (sites) {
         "'class=topsite href='" +
         topSite.url +
         "'><li class=topsiteContent>" +
+        '<div class=img-wrapper>' +
         '<img id=topsite' +
         index +
         ' width=32px height=32px src=' +
-        '/></br>' +
+        '/></div></br>' +
         '<span class=topsiteTitle>' +
         topSite.title +
         '</span>' +
@@ -64,6 +77,11 @@ function buildTopsiteList (sites) {
       $('#topsite' + index).prop(
         'src',
         'chrome://favicon/size/32/' + topSite.url
+      )
+    }
+    if (ShowBadges && badgeVal) {
+      $('.topSiteList > a:last > li:last > .img-wrapper:last').append(
+        '<div class="topsite-badge">' + badgeVal + '</div>'
       )
     }
   })
