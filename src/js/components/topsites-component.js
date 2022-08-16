@@ -33,22 +33,25 @@ export function init (settings) {
 
 function buildTopsiteList (sites) {
   $('.topSiteList').empty()
+  const badgeValRegex = /(?<=\()[0-9.,]*(?=\))/g
+  const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/g
+  const titleUrlRegex = /(?:\.|\/{2})(.*)(?:\.)/g
   sites.slice(0, 10).forEach((topSite, index) => {
     if (!topSite.title) {
-      const re = /(?:\.|\/{2})(.*)(?:\.)/g
-      topSite.title = re
+      titleUrlRegex.lastIndex = 0
+      topSite.title = titleUrlRegex
         .exec(topSite.url)[1]
         .replace(/^./, (str) => str.toUpperCase())
     }
     let badgeVal
     if (ShowBadges) {
-      const badgeValRegex = /(?<=\()[0-9.,]*(?=\))/
+      badgeValRegex.lastIndex = 0
       badgeVal = badgeValRegex.exec(topSite.title)
       console.log(badgeVal)
     }
 
     if (TrimTitles) {
-      const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/g
+      trimRegex.lastIndex = 0
       const newTitle = trimRegex.exec(topSite.title)[0]
       topSite.title = newTitle
     }
