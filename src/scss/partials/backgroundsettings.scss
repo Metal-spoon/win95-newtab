@@ -15,9 +15,8 @@
   text-align: center;
   display: grid;
   //108px = width icon (96px, hardcoded) + 12px padding
-  grid-template-columns: repeat(auto-fit, minmax(108px, max-content)); 
+  grid-template-columns: repeat(auto-fit, minmax(108px, max-content));
   justify-content: center;
-  
 }
 
 .wallpaper-item {
@@ -50,9 +49,5 @@
 
 .upload-button {
   float: right;
-  margin-top: 10px;
-}
-
-.random-checkbox {
   margin-top: 10px;
 }
