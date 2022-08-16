@@ -35,6 +35,10 @@
 .topsite:hover img {
   filter: url(#blueFilter);
 }
+
+.topsite:hover .topsite-badge {
+  display: none;
+}
 .topSiteList {
   display: flex;
   list-style-type: none;
@@ -83,7 +87,7 @@ a:nth-child(6n) {
   font-size: 14px;
   color: black;
   border: 1.5px solid black;
-  transform: translateX(40%);
+  transform: translateX(50%);
   display: flex;
   align-items: center;
   justify-content: center;
