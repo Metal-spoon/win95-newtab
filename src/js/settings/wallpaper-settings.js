@@ -138,7 +138,7 @@ function buildWallpaperListElement (wallpaper) {
 
   if (!wallpaper.isDefault) {
     const deleteImage =
-      "<img src='../assets/img/delete.png'width='24px'height='24px'title='Delete wallpaper' class='delete-icon'/> "
+      "<img src='../assets/img/icon_delete.png'width='24px'height='24px'title='Delete wallpaper' class='delete-icon'/> "
     element = element + deleteImage
   }
   element = element + '</li>'
