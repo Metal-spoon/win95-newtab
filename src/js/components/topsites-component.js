@@ -33,25 +33,25 @@ export function init (settings) {
 
 function buildTopsiteList (sites) {
   $('.topSiteList').empty()
-  const badgeValRegex = /(?<=\()[0-9.,]*(?=\))/g
-  const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/g
-  const titleUrlRegex = /(?:\.|\/{2})(.*)(?:\.)/g
+  const badgeValRegex = /(?<=\()[0-9.,]*(?=\))/
+  const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/
+  const titleUrlRegex = /(?:\.|\/{2})(.*)(?:\.)/
   sites.slice(0, 10).forEach((topSite, index) => {
+    badgeValRegex.lastIndex = 0
+    titleUrlRegex.lastIndex = 0
+    trimRegex.lastIndex = 0
     if (!topSite.title) {
-      titleUrlRegex.lastIndex = 0
       topSite.title = titleUrlRegex
         .exec(topSite.url)[1]
         .replace(/^./, (str) => str.toUpperCase())
     }
     let badgeVal
-    if (ShowBadges) {
-      badgeValRegex.lastIndex = 0
-      badgeVal = badgeValRegex.exec(topSite.title)
-      console.log(badgeVal)
+    if (ShowBadges && badgeValRegex.test(topSite.title)) {
+      badgeVal = badgeValRegex.exec(topSite.title)[0]
+      badgeVal = badgeVal.replace(/\./, '')
     }
 
     if (TrimTitles) {
-      trimRegex.lastIndex = 0
       const newTitle = trimRegex.exec(topSite.title)[0]
       topSite.title = newTitle
     }
@@ -61,10 +61,11 @@ function buildTopsiteList (sites) {
         "'class=topsite href='" +
         topSite.url +
         "'><li class=topsiteContent>" +
+        '<div class=img-wrapper>' +
         '<img id=topsite' +
         index +
         ' width=32px height=32px src=' +
-        '/></br>' +
+        '/></div></br>' +
         '<span class=topsiteTitle>' +
         topSite.title +
         '</span>' +
@@ -79,7 +80,7 @@ function buildTopsiteList (sites) {
       )
     }
     if (ShowBadges && badgeVal) {
-      $('.topSiteList > a:last > li:last').append(
+      $('.topSiteList > a:last > li:last > .img-wrapper:last').append(
         '<div class="topsite-badge">' + badgeVal + '</div>'
       )
     }
