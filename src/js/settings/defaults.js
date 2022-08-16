@@ -22,6 +22,7 @@ const ShowSeconds = false
 const TrimTitles = false
 const TopsiteOutlines = true
 const RetroTitles = false
+const ShowBadges = false
 
 export const DefaultSettings = {
   Wallpapers,
@@ -31,7 +32,8 @@ export const DefaultSettings = {
   ShowSeconds,
   TrimTitles,
   TopsiteOutlines,
-  RetroTitles
+  RetroTitles,
+  ShowBadges
 }
 
 export const AllSettings = [
@@ -42,7 +44,8 @@ export const AllSettings = [
   'ShowSeconds',
   'TrimTitles',
   'TopsiteOutlines',
-  'RetroTitles'
+  'RetroTitles',
+  'ShowBadges'
 ]
 
 export function SetDefaultSettings () {

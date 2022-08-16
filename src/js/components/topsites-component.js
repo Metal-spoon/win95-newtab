@@ -6,6 +6,7 @@
 let TrimTitles
 let TopsiteOutlines
 let RetroTitles
+let ShowBadges
 
 export function init (settings) {
   $('.topSiteList').empty()
@@ -15,6 +16,7 @@ export function init (settings) {
   TrimTitles = settings.TrimTitles
   TopsiteOutlines = settings.TopsiteOutlines
   RetroTitles = settings.RetroTitles
+  ShowBadges = settings.ShowBadges
 
   if (chrome.topSites.get.length === 0) {
     chrome.topSites.get((result) => {
@@ -38,10 +40,17 @@ function buildTopsiteList (sites) {
         .exec(topSite.url)[1]
         .replace(/^./, (str) => str.toUpperCase())
     }
+    let badgeVal
+    if (ShowBadges) {
+      const badgeValRegex = /(?<=\()[0-9.,]*(?=\))/
+      badgeVal = badgeValRegex.exec(topSite.title)
+      console.log(badgeVal)
+    }
 
     if (TrimTitles) {
       const trimRegex = /(?<=\)\s|^)([a-zA-z./0-9]*)(?=:|\s|$)/g
-      topSite.title = trimRegex.exec(topSite.title)[0]
+      const newTitle = trimRegex.exec(topSite.title)[0]
+      topSite.title = newTitle
     }
     $('.topSiteList').append(
       "<a title='" +
@@ -64,6 +73,11 @@ function buildTopsiteList (sites) {
       $('#topsite' + index).prop(
         'src',
         'chrome://favicon/size/32/' + topSite.url
+      )
+    }
+    if (ShowBadges && badgeVal) {
+      $('.topSiteList > a:last > li:last').append(
+        '<div class="topsite-badge">' + badgeVal + '</div>'
       )
     }
   })
