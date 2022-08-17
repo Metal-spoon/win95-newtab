@@ -1,7 +1,11 @@
 <div align='center'><img align='center' src='./src/assets/img/icon_store.png' width='64'/></div>
 <h1 align='center'> Win95 newtab </h1>
-<p align='center'>Win95 newtab is a customizeable themed newtab page inspired by windows 95/vaporwave. </br>
-It is currently available for both Firefox and Chrome.</p>
+<p align='center'>Win95 newtab is a customizeable themed newtab page inspired by windows 95/vaporwave.
+<div align='center'>
+<a href='https://chrome.google.com/webstore/detail/win95-newtab/jldkfnpihcmhefmocabimamogcmmmeia'><img src='https://user-images.githubusercontent.com/9281807/185161687-2ac54981-7261-40df-9dcf-527415d8843e.png'/>
+</a>
+<a href='https://addons.mozilla.org/en-US/firefox/addon/win95-newtab/'><img src='https://user-images.githubusercontent.com/9281807/185161174-39589ab9-d66b-427c-8afc-8558980f2d63.png'/></a>
+</div>
 
 # Getting started
 
