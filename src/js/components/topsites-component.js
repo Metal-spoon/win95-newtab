@@ -45,6 +45,8 @@ function buildTopsiteList (sites) {
         .exec(topSite.url)[1]
         .replace(/^./, (str) => str.toUpperCase())
     }
+
+    topSite.title = topSite.title.replace(/['"]/g, '')
     let badgeVal
     if (ShowBadges && badgeValRegex.test(topSite.title)) {
       badgeVal = badgeValRegex.exec(topSite.title)[0]
