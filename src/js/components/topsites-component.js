@@ -67,7 +67,7 @@ function buildTopsiteList (sites) {
         '<img id=topsite' +
         index +
         ' width=32px height=32px src=' +
-        '/></div></br>' +
+        '/></div>' +
         '<span class=topsiteTitle>' +
         topSite.title +
         '</span>' +
