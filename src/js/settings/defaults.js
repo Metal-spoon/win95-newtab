@@ -16,33 +16,33 @@ export const SearchEngineList = [
 ]
 
 const SelectedSearchEngine = SearchEngineList[0]
-const RandomWallpaper = true
 const HourFormat24 = false
 const ShowSeconds = false
 const TrimTitles = false
 const TopsiteOutlines = true
 const RetroTitles = false
+const ShowBadges = false
 
 export const DefaultSettings = {
   Wallpapers,
   SelectedSearchEngine,
-  RandomWallpaper,
   HourFormat24,
   ShowSeconds,
   TrimTitles,
   TopsiteOutlines,
-  RetroTitles
+  RetroTitles,
+  ShowBadges
 }
 
 export const AllSettings = [
   'Wallpapers',
   'SelectedSearchEngine',
-  'RandomWallpaper',
   'HourFormat24',
   'ShowSeconds',
   'TrimTitles',
   'TopsiteOutlines',
-  'RetroTitles'
+  'RetroTitles',
+  'ShowBadges'
 ]
 
 export function SetDefaultSettings () {

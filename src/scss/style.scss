@@ -1,4 +1,4 @@
-@import "../../node_modules/bootstrap/scss/bootstrap";
+@import '../../node_modules/bootstrap/scss/bootstrap';
 
 @import './partials/variables';
 @import './partials/searchdialog';
@@ -176,7 +176,7 @@ svg {
 
 .dropdown-95 {
   -webkit-appearance: none;
-  background-image: url('../assets/img/dropdown.png');
+  background-image: url('../assets/img/icon_dropdown.png');
   background-repeat: no-repeat;
   background-position: right 50%;
   font-size: 16px;
@@ -232,7 +232,7 @@ input[type='text']:focus {
   width: 100%;
   z-index: 999;
   height: 100%;
-  background: rgba(0,0,0, 0.8);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .spinner-content {
@@ -254,8 +254,12 @@ input[type='text']:focus {
 }
 
 @keyframes spinner-anim {
-  from { background-position: 0px; }
-  to { background-position: -896px; }
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: -896px;
+  }
 }
 
 #spinner-text {
@@ -271,5 +275,5 @@ input[type='text']:focus {
 }
 
 .retrobg {
-  background-color: #008080
+  background-color: #008080;
 }
