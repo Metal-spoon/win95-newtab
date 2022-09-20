@@ -12,7 +12,8 @@ export const SearchEngineList = [
   new SearchEngine(2, 'Bing', 'https://www.bing.com/search?q='),
   new SearchEngine(3, 'DuckDuckGo', 'https://duckduckgo.com/?q='),
   new SearchEngine(4, 'Yandex', 'https://yandex.com/search/?text='),
-  new SearchEngine(5, 'Ecosia', 'https://www.ecosia.org/search?q=')
+  new SearchEngine(5, 'Ecosia', 'https://www.ecosia.org/search?q='),
+  new SearchEngine(6, 'Startpage', 'https://www.startpage.com/sp/search?query=')
 ]
 
 const SelectedSearchEngine = SearchEngineList[0]
