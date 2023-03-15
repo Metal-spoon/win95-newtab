@@ -8,7 +8,7 @@ export function init (settings) {
 
 function onSearchButtonClick (e) {
   $('#searchbutton').trigger('blur')
-  const searchQuery = $('.searchbar').val()
+  const searchQuery = encodeURIComponent($('.searchbar').val())
   if (searchQuery !== '') {
     window.location.href = SelectedSearchEngine.url + searchQuery
   }
