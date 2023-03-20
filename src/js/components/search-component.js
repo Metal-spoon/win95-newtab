@@ -16,7 +16,7 @@ function onSearchButtonClick (e) {
 
 function bindevents () {
   $('.searchbar').on('keydown', (e) => {
-    if (e.code === 'Enter') {
+    if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       onSearchButtonClick()
     }
   })
