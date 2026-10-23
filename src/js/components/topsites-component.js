@@ -76,10 +76,10 @@ function buildTopsiteList (sites) {
     if (topSite.favicon) {
       $('#topsite' + index).prop('src', topSite.favicon)
     } else {
-      $('#topsite' + index).prop(
-        'src',
-        'chrome://favicon/size/32/' + topSite.url
-      )
+      const faviconUrl = new URL(chrome.runtime.getURL('/_favicon/'))
+      faviconUrl.searchParams.set('pageUrl', topSite.url)
+      faviconUrl.searchParams.set('size', '32')
+      $('#topsite' + index).prop('src', faviconUrl.toString())
     }
     if (ShowBadges && badgeVal) {
       $('.topSiteList > a:last > li:last > .img-wrapper:last').append(
