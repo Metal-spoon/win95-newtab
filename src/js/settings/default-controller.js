@@ -5,7 +5,7 @@ let _currentDialog
 export function init (currentDialog) {
   _currentDialog = currentDialog
   showSpinner()
-  $('#' + currentDialog.id + '-modal input').each((index, input) => {
+  $(`#${currentDialog.id}-modal input`).each((index, input) => {
     chrome.storage.local.get(input.name, (result) => {
       const value = result[input.name]
       switch (input.type) {
@@ -25,7 +25,7 @@ export function init (currentDialog) {
 export function save () {
   showSpinner('Saving...')
   const saveData = {}
-  $('#' + _currentDialog.id + '-modal input').each((index, input) => {
+  $(`#${_currentDialog.id}-modal input`).each((index, input) => {
     switch (input.type) {
       case 'checkbox':
         saveData[input.name] = input.checked

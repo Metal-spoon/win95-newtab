@@ -1,7 +1,4 @@
-/*
- *TODO:
- *Template based DOM elements instead of hacky inline html appends
- */
+import { html } from '../utils/html.js'
 
 let TrimTitles
 let TopsiteOutlines
@@ -57,33 +54,27 @@ function buildTopsiteList (sites) {
       const newTitle = trimRegex.exec(topSite.title)[0]
       topSite.title = newTitle
     }
-    $('.topSiteList').append(
-      "<a title='" +
-        topSite.title +
-        "'class=topsite href='" +
-        topSite.url +
-        "'><li class=topsiteContent>" +
-        '<div class=img-wrapper>' +
-        '<img id=topsite' +
-        index +
-        ' width=32px height=32px src=' +
-        '/></div>' +
-        '<span class=topsiteTitle>' +
-        topSite.title +
-        '</span>' +
-        '</li></a>'
-    )
+    $('.topSiteList').append(html`
+      <a title='${topSite.title}'class=topsite href='${topSite.url}'>
+        <li class=topsiteContent>
+          <div class=img-wrapper>
+            <img id=topsite${index} width=32px height=32px src=/>
+          </div>
+          <span class=topsiteTitle>${topSite.title}</span>
+        </li>
+      </a>
+    `)
     if (topSite.favicon) {
-      $('#topsite' + index).prop('src', topSite.favicon)
+      $(`#topsite${index}`).prop('src', topSite.favicon)
     } else {
       const faviconUrl = new URL(chrome.runtime.getURL('/_favicon/'))
       faviconUrl.searchParams.set('pageUrl', topSite.url)
       faviconUrl.searchParams.set('size', '32')
-      $('#topsite' + index).prop('src', faviconUrl.toString())
+      $(`#topsite${index}`).prop('src', faviconUrl.toString())
     }
     if (ShowBadges && badgeVal) {
       $('.topSiteList > a:last > li:last > .img-wrapper:last').append(
-        '<div class="topsite-badge">' + badgeVal + '</div>'
+        `<div class="topsite-badge">${badgeVal}</div>`
       )
     }
   })

@@ -76,7 +76,7 @@ function onModalSaveClick (e) {
 export function showModal (elementId) {
   currentDialog = dialogs.find(({ id }) => id === elementId)
   $('#modal-title').text(currentDialog.title)
-  const content = contentpath + currentDialog.id + '.html'
+  const content = `${contentpath}${currentDialog.id}.html`
   $('#modal-body').load(content, function () {
     if (currentDialog.id === 'credits') {
       $('#modal-button-cancel').hide()
