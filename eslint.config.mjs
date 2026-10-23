@@ -19,9 +19,20 @@ export default [
     }
   },
   {
-    files: ['gulpfile.mjs', 'eslint.config.mjs'],
+    files: ['gulpfile.mjs', 'eslint.config.mjs', 'vitest.config.mjs'],
     languageOptions: {
       globals: globals.node
+    }
+  },
+  {
+    files: ['test/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.webextensions,
+        ...globals.jquery
+      }
     }
   }
 ]

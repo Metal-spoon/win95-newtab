@@ -13,20 +13,26 @@
     "createArchive": "gulp createArchive",
     "prepareLibs": "gulp prepareLibs",
     "prepareRelease": "gulp prepareRelease",
-    "watch": "gulp startWatch"
+    "watch": "gulp startWatch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "author": "Metal-spoon",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
+    "@vitest/coverage-v8": "^5.0.5",
     "del": "^9.0.1",
     "eslint": "^10.13.0",
     "globals": "^17.13.0",
     "gulp": "^5.0.1",
     "gulp-sass": "^6.0.1",
     "gulp-zip": "^6.1.0",
+    "jsdom": "^30.1.3",
     "neostandard": "^0.14.1",
     "prettier": "^3.9.10",
-    "sass": "^1.106.1"
+    "sass": "^1.106.1",
+    "vitest": "^5.0.5"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",

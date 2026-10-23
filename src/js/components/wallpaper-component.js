@@ -4,15 +4,15 @@ const assetPath = '/assets/img/bg/'
 
 export function init (settings) {
   Wallpapers = settings.Wallpapers
-  selectedWallpaper = selectWallpaper()
+  selectedWallpaper = selectWallpaper(Wallpapers)
   updateDOM(selectedWallpaper)
 }
 
-function selectWallpaper () {
+export function selectWallpaper (wallpapers, random = Math.random) {
   let wallpaper
-  const enabledWallpapers = Wallpapers.filter((x) => x.isEnabled === true)
+  const enabledWallpapers = wallpapers.filter((x) => x.isEnabled === true)
   if (enabledWallpapers.length > 1) {
-    const index = Math.floor(Math.random() * enabledWallpapers.length)
+    const index = Math.floor(random() * enabledWallpapers.length)
     wallpaper = enabledWallpapers[index]
   } else {
     wallpaper = enabledWallpapers[0]

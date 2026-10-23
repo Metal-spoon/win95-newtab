@@ -7,7 +7,7 @@ const Wallpapers = [
 ]
 
 export const SearchEngineList = [
-  new SearchEngine(0, 'Google', 'http://www.google.com/search?q='),
+  new SearchEngine(0, 'Google', 'https://www.google.com/search?q='),
   new SearchEngine(1, 'Yahoo', 'https://search.yahoo.com/search?p='),
   new SearchEngine(2, 'Bing', 'https://www.bing.com/search?q='),
   new SearchEngine(3, 'DuckDuckGo', 'https://duckduckgo.com/?q='),
