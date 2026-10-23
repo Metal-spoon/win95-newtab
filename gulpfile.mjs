@@ -44,7 +44,10 @@ gulp.task('copyManifest', (done) => {
 })
 
 gulp.task('copyAndMinJS', (done) => {
-  gulp.src(['src/**/*.js']).pipe(gulp.dest('dist')).on('end', done)
+  gulp
+    .src(['src/**/*.js', '!src/**/*.spec.js'])
+    .pipe(gulp.dest('dist'))
+    .on('end', done)
 })
 
 gulp.task('createArchive', (done) => {

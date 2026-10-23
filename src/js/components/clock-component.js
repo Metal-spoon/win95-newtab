@@ -12,7 +12,10 @@ export function init (settings) {
 }
 
 function updateClock () {
-  const currentTime = new Date()
+  $('.clockText').text(formatTime(new Date(), { HourFormat24, ShowSeconds }))
+}
+
+export function formatTime (currentTime, { HourFormat24, ShowSeconds }) {
   let currentHours = currentTime.getHours()
   let currentMinutes = currentTime.getMinutes()
   currentMinutes = `${currentMinutes < 10 ? '0' : ''}${currentMinutes}`
@@ -35,5 +38,5 @@ function updateClock () {
     clockString = `${clockString}${dayTime}`
   }
 
-  $('.clockText').text(clockString)
+  return clockString
 }

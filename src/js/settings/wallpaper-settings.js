@@ -40,7 +40,7 @@ function onFileUpload (e) {
   const filereader = new FileReader()
   filereader.onload = () => {
     defaultController.showSpinner('Uploading...')
-    const id = Wallpapers.reduce((a, b) => (a.id > b.y ? a : b)).id + 1
+    const id = nextWallpaperId(Wallpapers)
     const data = filereader.result
     const key = keyPrefix + id
     imageData[key] = data
@@ -63,6 +63,10 @@ function onFileUpload (e) {
     defaultController.hideSpinner()
   }
   filereader.readAsDataURL(e.target.files[0])
+}
+
+export function nextWallpaperId (wallpapers) {
+  return Math.max(-1, ...wallpapers.map(({ id }) => id)) + 1
 }
 
 function updateWallpaperDOM () {

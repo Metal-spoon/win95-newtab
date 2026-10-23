@@ -61,13 +61,14 @@ function onModalCancelClick (e) {
 
 function closeModal () {
   $('#settings-modal').hide()
+  // Credits swaps these, so put them back however the dialog was closed
+  $('#modal-button-cancel').show()
+  $('#modal-button-save').text('Save')
 }
 
 function onModalSaveClick (e) {
   if (currentDialog.id === 'credits') {
     closeModal()
-    $('#modal-button-cancel').show()
-    $('#modal-button-save').text('Save')
     return
   }
   currentDialog.controller.save()
