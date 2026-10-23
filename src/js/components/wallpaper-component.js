@@ -24,11 +24,11 @@ function selectWallpaper () {
 export function updateDOM () {
   let cssValue
   if (selectedWallpaper.isDefault) {
-    cssValue = 'url(' + assetPath + selectedWallpaper.fileName + ')'
+    cssValue = `url(${assetPath}${selectedWallpaper.fileName})`
     $('.background').css('background-image', cssValue)
   } else {
     chrome.storage.local.get(selectedWallpaper.key, (result) => {
-      cssValue = 'url(' + result[selectedWallpaper.key] + ')'
+      cssValue = `url(${result[selectedWallpaper.key]})`
       $('.background').css('background-image', cssValue)
     })
   }

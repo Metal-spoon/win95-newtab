@@ -1,5 +1,6 @@
 import { Wallpaper } from '../models/wallpaper.js'
 import * as defaultController from './default-controller.js'
+import { html } from '../utils/html.js'
 
 let Wallpapers
 let imageData = {}
@@ -108,42 +109,23 @@ function buildWallpaperListElement (wallpaper) {
     ? assetPath + wallpaper.fileName
     : imageData[wallpaper.key]
 
-  let element =
-    "<li title='" +
-    wallpaper.fileName +
-    "' class='wallpaper-item'>" +
-    "<div class='wallpaper-image-wrapper checkBoxContainer'>"
+  const checked = wallpaper.isEnabled ? "checked='true'" : ''
+  const deleteImage = wallpaper.isDefault
+    ? ''
+    : "<img src='../assets/img/icon_delete.png'width='24px'height='24px'title='Delete wallpaper' class='delete-icon'/> "
 
-  element = element + "<img src='" + imageSrc
-
-  element =
-    element +
-    "' width='96px' height='54px' />" +
-    "<input class='wallpaper-checkbox' type='checkbox'"
-  if (wallpaper.isEnabled) {
-    element = element + "checked='true'"
-  }
-
-  element =
-    element +
-    '/>' +
-    "<span class='checkmark wallpaper-checkmark'></span>" +
-    '</div>' +
-    '<div class="wallpaper-file-name-wrapper">' +
-    wallpaper.fileName +
-    ' </div>'
-
-  element =
-    element + "<span class='d-none identifier'>" + wallpaper.id + '</span>'
-
-  if (!wallpaper.isDefault) {
-    const deleteImage =
-      "<img src='../assets/img/icon_delete.png'width='24px'height='24px'title='Delete wallpaper' class='delete-icon'/> "
-    element = element + deleteImage
-  }
-  element = element + '</li>'
-
-  return element
+  return html`
+    <li title='${wallpaper.fileName}' class='wallpaper-item'>
+      <div class='wallpaper-image-wrapper checkBoxContainer'>
+        <img src='${imageSrc}' width='96px' height='54px' />
+        <input class='wallpaper-checkbox' type='checkbox'${checked}/>
+        <span class='checkmark wallpaper-checkmark'></span>
+      </div>
+      <div class="wallpaper-file-name-wrapper">${wallpaper.fileName} </div>
+      <span class='d-none identifier'>${wallpaper.id}</span>
+      ${deleteImage}
+    </li>
+  `
 }
 
 export function save () {

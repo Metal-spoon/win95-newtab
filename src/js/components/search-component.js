@@ -2,7 +2,7 @@ let SelectedSearchEngine
 
 export function init (settings) {
   SelectedSearchEngine = settings.SelectedSearchEngine
-  $('#search-dialog-title').text(SelectedSearchEngine.name + ' search...')
+  $('#search-dialog-title').text(`${SelectedSearchEngine.name} search...`)
   bindevents()
 }
 

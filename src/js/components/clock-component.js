@@ -15,7 +15,7 @@ function updateClock () {
   const currentTime = new Date()
   let currentHours = currentTime.getHours()
   let currentMinutes = currentTime.getMinutes()
-  currentMinutes = (currentMinutes < 10 ? '0' : '') + currentMinutes
+  currentMinutes = `${currentMinutes < 10 ? '0' : ''}${currentMinutes}`
   let dayTime = ''
 
   if (!HourFormat24) {
@@ -23,16 +23,16 @@ function updateClock () {
     currentHours = currentHours > 12 ? currentHours - 12 : currentHours
     currentHours = currentHours === 0 ? 12 : currentHours
   }
-  let clockString = currentHours + ':' + currentMinutes
+  let clockString = `${currentHours}:${currentMinutes}`
   if (ShowSeconds) {
     let currentSeconds = currentTime.getSeconds()
     if (currentSeconds < 10) {
-      currentSeconds = '0' + currentSeconds
+      currentSeconds = `0${currentSeconds}`
     }
-    clockString = clockString + ':' + currentSeconds
+    clockString = `${clockString}:${currentSeconds}`
   }
   if (!HourFormat24) {
-    clockString = clockString + dayTime
+    clockString = `${clockString}${dayTime}`
   }
 
   $('.clockText').text(clockString)
