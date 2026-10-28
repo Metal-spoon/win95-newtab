@@ -1,0 +1,77 @@
+name: Tag release
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    # Closed pull requests also include ones that were closed without merging
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      # The event's default ref is the PR's test merge, not the commit that landed on main
+      - uses: actions/checkout@v7
+        if: ${{ !env.ACT }}
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+      # act only uses the local working copy when no ref is given
+      - uses: actions/checkout@v7
+        if: ${{ env.ACT }}
+
+      - name: Check that the versions match
+        id: version
+        run: |
+          manifest=$(node -p "require('./src/manifest.json').version ?? ''")
+          package=$(node -p "require('./package.json').version ?? ''")
+          if [ -z "$manifest" ] || [ -z "$package" ]; then
+            echo "::error::Missing version: src/manifest.json has '$manifest', package.json has '$package'"
+            exit 1
+          fi
+          if [ "$manifest" != "$package" ]; then
+            echo "::error::Version mismatch: src/manifest.json has $manifest, package.json has $package"
+            exit 1
+          fi
+          echo "Version: $manifest"
+          echo "version=$manifest" >> "$GITHUB_OUTPUT"
+
+      - name: Check that the tag doesn't exist yet
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
+            echo "::error::Tag $VERSION already exists. Bump the version in src/manifest.json and package.json."
+            exit 1
+          fi
+
+      - name: Create tag
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git show --no-patch --format='Tagged %H as %D' "$VERSION"
+
+      # act sets ACT=true; skip the push there so local test runs can't create real tags
+      - name: Push tag
+        if: ${{ !env.ACT }}
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: git push origin "refs/tags/$VERSION"
+
+  # Tags pushed with GITHUB_TOKEN don't trigger release.yml, so call it directly.
+  # act's default actor is nektos/act; the tag only exists inside its container there
+  release:
+    needs: tag
+    if: github.actor != 'nektos/act'
+    uses: ./.github/workflows/release.yml
+    with:
+      tag: ${{ needs.tag.outputs.version }}
