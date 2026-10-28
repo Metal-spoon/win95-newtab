@@ -16,7 +16,8 @@
     "watch": "gulp startWatch",
     "test": "vitest run",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "lint": "eslint ."
   },
   "author": "Metal-spoon",
   "license": "GPL-3.0-or-later",
