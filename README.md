@@ -12,7 +12,7 @@ To start developing you first need to run a few commands to get set up properly.
 
 This project uses NPM for some basic dependencies and dev tools.
 
-This project uses Gulp.js for defining tasks that aid in development.
+This project uses Gulp.js for defining tasks that aid in development. Every task can be run with `npm run <task>`, so Gulp doesn't need to be installed globally.
 
 The main dependencies are Jquery and bootstrap.
 
@@ -20,8 +20,14 @@ To get started run these commands:
 
 ```
 npm install
-gulp compileStyle
-gulp prepareLibs
+npm run compileStyle
+npm run prepareLibs
+```
+
+To recompile the sass automatically while you work:
+
+```
+npm run watch
 ```
 
 ### Creating a release archive
@@ -29,10 +35,10 @@ gulp prepareLibs
 To create a release version use the following command:
 
 ```
-gulp prepareRelease
+npm run prepareRelease
 ```
 
-This will first copy everything over to the dist folder, minifies the javascript, compiles the sass and then packs it into a timestamped zip.
+This will first copy everything over to the dist folder, compiles the sass and then packs it into a timestamped zip.
 
 The result can be found in the release archive folder.
 
@@ -47,6 +53,28 @@ Go to settings -> extensions -> load unpacked -> select the src folder
 ### Firefox
 
 Go to settings -> extensions and themes -> press the cog wheel top right -> debug addons -> load temporary addon -> select manifest.json in the src folder
+
+## Testing
+
+Unit tests use [Vitest](https://vitest.dev) with jsdom and a mocked `chrome` API (`test/mocks/chrome.js`), so no browser is needed. Tests live next to the code they test as `*.spec.js` files.
+
+Run all tests once:
+
+```
+npm test
+```
+
+Rerun tests on every change:
+
+```
+npm run test:watch
+```
+
+Run all tests with a coverage report (the HTML report is written to `coverage/`):
+
+```
+npm run coverage
+```
 
 # Contributing guidelines
 

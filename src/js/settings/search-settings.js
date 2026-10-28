@@ -29,8 +29,7 @@ function onDropdownChange () {
 }
 
 function buildSearchEngineOptionElement (searchEngine) {
-  const element =
-    '<option value=' + searchEngine.id + '>' + searchEngine.name + '</option>'
+  const element = `<option value=${searchEngine.id}>${searchEngine.name}</option>`
   return element
 }
 

@@ -1,9 +1,12 @@
-/* eslint-disable linebreak-style */
-const gulp = require('gulp')
-const sass = require('gulp-sass')(require('sass'))
-const zip = require('gulp-zip')
-const del = require('del')
-const manifest = require('./src/manifest.json')
+import { readFileSync } from 'node:fs'
+import gulp from 'gulp'
+import gulpSass from 'gulp-sass'
+import * as dartSass from 'sass'
+import zip from 'gulp-zip'
+import { deleteAsync } from 'del'
+
+const sass = gulpSass(dartSass)
+const manifest = JSON.parse(readFileSync('./src/manifest.json', 'utf8'))
 
 gulp.task('compileStyle', () => {
   return gulp.src('src/scss/style.scss').pipe(sass()).pipe(gulp.dest('src/css'))
@@ -14,7 +17,7 @@ gulp.task('startWatch', function () {
 })
 
 gulp.task('clean', () => {
-  return del('dist/**', { force: true })
+  return deleteAsync('dist/**', { force: true })
 })
 
 gulp.task('compileStyleDist', (done) => {
@@ -26,7 +29,10 @@ gulp.task('compileStyleDist', (done) => {
 })
 
 gulp.task('copyAssets', (done) => {
-  gulp.src(['src/assets/**/*']).pipe(gulp.dest('dist/assets')).on('end', done)
+  gulp
+    .src(['src/assets/**/*'], { encoding: false })
+    .pipe(gulp.dest('dist/assets'))
+    .on('end', done)
 })
 
 gulp.task('copyHtml', (done) => {
@@ -38,7 +44,10 @@ gulp.task('copyManifest', (done) => {
 })
 
 gulp.task('copyAndMinJS', (done) => {
-  gulp.src(['src/**/*.js']).pipe(gulp.dest('dist')).on('end', done)
+  gulp
+    .src(['src/**/*.js', '!src/**/*.spec.js'])
+    .pipe(gulp.dest('dist'))
+    .on('end', done)
 })
 
 gulp.task('createArchive', (done) => {
@@ -48,7 +57,7 @@ gulp.task('createArchive', (done) => {
   console.log(timestamp)
 
   gulp
-    .src('dist/**')
+    .src('dist/**', { encoding: false })
     .pipe(zip('95newtab-rel-' + version + ' ' + timestamp + '.zip'))
     .pipe(gulp.dest('Release Archive'))
     .on('end', done)

@@ -61,13 +61,14 @@ function onModalCancelClick (e) {
 
 function closeModal () {
   $('#settings-modal').hide()
+  // Credits swaps these, so put them back however the dialog was closed
+  $('#modal-button-cancel').show()
+  $('#modal-button-save').text('Save')
 }
 
 function onModalSaveClick (e) {
   if (currentDialog.id === 'credits') {
     closeModal()
-    $('#modal-button-cancel').show()
-    $('#modal-button-save').text('Save')
     return
   }
   currentDialog.controller.save()
@@ -76,7 +77,7 @@ function onModalSaveClick (e) {
 export function showModal (elementId) {
   currentDialog = dialogs.find(({ id }) => id === elementId)
   $('#modal-title').text(currentDialog.title)
-  const content = contentpath + currentDialog.id + '.html'
+  const content = `${contentpath}${currentDialog.id}.html`
   $('#modal-body').load(content, function () {
     if (currentDialog.id === 'credits') {
       $('#modal-button-cancel').hide()
